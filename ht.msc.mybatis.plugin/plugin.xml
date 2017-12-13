@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension
+	         point="org.eclipse.ui.popupMenus">
+	      <objectContribution
+	      		adaptable="true"
+	            id="ht.msc.mybatis.plugin.contribution"
+	            objectClass="org.eclipse.core.resources.IFile">
+	         <action
+	               class="ht.msc.mybatis.plugin.PluginAction"
+	               icon="icons/mybatis.ico"
+	               enablesFor="1"
+	               id="ht.msc.mybatis.plugin.action"
+	               label="Generator WonHigh Framework"
+	               menubarPath="additions">
+	         </action>
+	      </objectContribution>
+	   </extension>
+</plugin>
