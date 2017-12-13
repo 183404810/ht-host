@@ -1,0 +1,396 @@
+.toplogo {
+	background: url('../images/bellelogo.gif') no-repeat !important;
+}
+
+.x-grid-rows-delete {
+	color: red !important;
+	text-decoration: line-through !important;
+	font-style: italic;
+}
+
+.x-grid-rows-add {
+	color: blue !important;
+	font-weight: bolder;
+}
+
+.notnull-field {
+	color: blue !important;
+}
+.cannull-field{
+	color:green !important;
+}
+
+.select-field{
+	color:#2a6d9e!important;
+}
+
+.grid-error-cell{
+	border:solid red 1px;
+}
+
+.x-grid-input-cell{
+   background-color: #8facd0;
+}
+
+.x-grid-deinput-cell{
+	background-color: #898989;
+}
+
+.x-grid-rows-edit{
+	font-weight: 700;
+}
+
+#app-header {
+	background-color: #214674;
+	background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #275287), color-stop(100%, #1b3a60));
+	background-image: -webkit-linear-gradient(top, #275287, #1b3a60);
+	background-image: -moz-linear-gradient(top, #275287, #1b3a60);
+	background-image: -o-linear-gradient(top, #275287, #1b3a60);
+	background-image: -ms-linear-gradient(top, #275287, #1b3a60);
+	background-image: linear-gradient(top, #275287, #1b3a60);
+	border-bottom: 1px solid #102238
+}
+
+#app-header-logo {
+	width: 150px;
+	height: 50px;
+	background: url(../images/blf1.png) no-repeat center center;
+	background-size: 90%;
+	/*border-right: solid #5b8dab 1px;*/
+	margin-left: 12px;
+}
+
+
+#app-header-title {
+	color: #fff;
+	font-size: 20px;
+	font-family: "微软雅黑";
+	padding-left: 20px;
+}
+
+#app-header-title-en {
+	color: #fff;
+	font-size: 14px;
+	font-family: Arial;
+	padding-left: 20px;
+}
+
+#app-header-version{
+	color:#fff;
+	font-size:15px;
+	font-family: Arial;
+	padding: 24px 0px 0px 5px;
+}
+
+#app-header-systemname{
+	color:#fff;
+	font-size:17px;
+	font-family: "微软雅黑";
+	padding: 20px 0px 0px 5px;
+}
+
+#app-header-toolbar span{
+	color:#fff !important;
+	opacity:1;
+}
+
+#app-homepage{
+	background:url(../images/ad_pic.jpg) no-repeat center center;
+}
+
+.x-btn-inner-default-toolbar-small{
+	font-size:10pt;
+}
+
+.x-btn-icon-el-default-toolbar-small.x-btn-glyph{
+	/*font-size:17px*/
+}
+
+.x-btn-default-small .x-btn-inner,.x-btn-default-medium .x-btn-inner,.x-btn-default-large .x-btn-inner,.x-btn-default-toolbar-small .x-btn-inner,.x-btn-default-toolbar-medium .x-btn-inner,.x-btn-default-toolbar-large .x-btn-inner,.x-menu-item-text,.x-html-editor-tb .x-font-select,.x-panel-header-default,.x-panel-header-text-default,.x-panel-header-default-framed,.x-tip-header,.x-tip-body,.x-form-invalid-tip-body,.x-tip-header-text,.x-progress-text,.x-toolbar,.x-toolbar .x-form-item-label,.x-toolbar .x-toolbar-text,.x-window-header-text-default,.x-tab-bar,.x-tab button,.x-grid-rowbody,.x-grid-row .x-grid-cell,.x-grid-group-title,.x-grid-row-editor .x-form-field,.x-grid-row-editor .x-form-display-field,.x-form-invalid-under,.x-fieldset-header,.x-column-header,.x-mask-msg div,.x-btn-group-header-text-default-framed,table.x-datepicker-inner a,.x-monthpicker-item,.x-dd-drag-ghost,.x-body,.x-progress-default .x-progress-text,.x-panel-header-title-default,.x-panel-body-default,.x-panel-header-title-default-framed,.x-panel-body-default-framed,.x-panel-default-framed-frameInfo,.x-panel-header-default-framed-top-frameInfo,.x-panel-header-default-framed-right-frameInfo,.x-panel-header-default-framed-bottom-frameInfo,.x-panel-header-default-framed-left-frameInfo,.x-panel-header-default-framed-collapsed-top-frameInfo,.x-panel-header-default-framed-collapsed-right-frameInfo,.x-panel-header-default-framed-collapsed-bottom-frameInfo,.x-panel-header-default-framed-collapsed-left-frameInfo,.x-btn-default-small-frameInfo,.x-btn-default-medium-frameInfo,.x-btn-default-large-frameInfo,.x-btn-default-toolbar-small-frameInfo,.x-btn-default-toolbar-medium-frameInfo,.x-btn-default-toolbar-large-frameInfo,.x-tab-default-top-frameInfo,.x-tab-default-bottom-frameInfo,.x-tab-default-left-frameInfo,.x-tab-default-right-frameInfo,.x-window-default-frameInfo,.x-window-body-default,.x-window-header-title-default,.x-window-header-default-top-frameInfo,.x-window-header-default-right-frameInfo,.x-window-header-default-bottom-frameInfo,.x-window-header-default-left-frameInfo,.x-window-header-default-collapsed-top-frameInfo,.x-window-header-default-collapsed-right-frameInfo,.x-window-header-default-collapsed-bottom-frameInfo,.x-window-header-default-collapsed-left-frameInfo,.x-tip-default-frameInfo,.x-tip-form-invalid-frameInfo,.x-btn-group-default-framed-frameInfo,.x-btn-group-default-framed-notitle-frameInfo,.x-html-editor-tb .x-font-select,.x-btn-grid-cell-small-frameInfo,.x-grid-row-editor-buttons-default-bottom-frameInfo,.x-grid-row-editor-buttons-default-top-frameInfo,.x-accordion-hd .x-panel-header-title,.x-box-mc,.x-form-item-label-inner,.x-form-text-default,.x-gecko,.x-border-box,.x-container,.x-container-default,.x-border-layout-ct,.x-form-text,.x-form-focus ,.x-field-form-focus,.x-field-default-form-focus,.x-tab-button,.x-tab-button-default,.x-tab-text,.x-tab-button-center,.x-tab.x-tab-active.x-tab-default-top, .x-tab.x-tab-active.x-tab-default-left, .x-tab.x-tab-active.x-tab-default-right,.x-tab.x-tab-active.x-tab-default,.x-title-text,.x-title-text-default,.x-title-item,.x-btn-inner-default-small,.x-tree-node-text,.x-grid-item,.x-grid-cell-inner
+
+{
+	/* font-family: "微软雅黑","黑体","宋体","Arial", "Helvetica", "sans-serif"; */
+	font-size: 12px;
+	font-family: "宋体","Arial", "Helvetica", "sans-serif";
+	
+}
+
+.x-column-header-inner{
+	font-size:9pt;
+}
+
+.x-form-item-label-inner{
+	font-size:9pt;
+}
+
+.x-column-header {
+	text-shadow: 0 0 0 rgba(255, 255, 255, 0.3);
+}
+
+/*tab选中  */
+.x-tab-active {
+	border-top: solid 2px #DAA520;
+	font-weight:bold;
+}
+.x-tab-active .x-tab-wrap .x-tab-button .x-tab-inner {
+	font-size: 12px;
+	font-weight:bold;
+	color : blue;
+}
+.x-tree-node-text{
+	font-size:9pt;
+}
+.x-grid-cell-inner-treecolumn{
+	cursor:pointer;
+}
+
+
+.belle-common-filter-like{}
+
+.belle-common-triggers-filter{
+	border-right:1px solid #7eadd9
+}
+
+.belle-common-filter-like .belle-common-triggers-filter-default,
+.belle-common-filter-like .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-like .x-form-trigger-over
+{
+	background-image:url(../js/extjs/packages/ext-theme-classic/images/grid/filters/find.png);
+	background-position:0px 2px;
+	
+}
+
+.belle-common-filter-like .belle-common-triggers-filter-default{
+	border-top:1px solid #b5b8c8;
+}
+.belle-common-filter-like .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-like .x-form-trigger-default.x-form-trigger-focus
+.belle-common-filter-like .x-form-trigger-default.x-form-trigger-over{
+	border:1px 1px 1px 1px;
+	border-color:#7eadd9;
+	border-style:solid;
+}
+
+.belle-common-filter-likeleft .belle-common-triggers-filter-default,
+.belle-common-filter-likeleft .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-likeleft .x-form-trigger-over
+{
+	background-image:url(../js/extjs/packages/ext-theme-classic/images/grid/dd-insert-arrow-right.gif);
+	background-position:0px 2px;
+	
+}
+
+.belle-common-filter-likeleft .belle-common-triggers-filter-default{
+	border-top:1px solid #b5b8c8;
+}
+.belle-common-filter-likeleft .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-likeleft .x-form-trigger-default.x-form-trigger-focus
+.belle-common-filter-likeleft .x-form-trigger-default.x-form-trigger-over{
+	border:1px 1px 1px 1px;
+	border-color:#7eadd9;
+	border-style:solid;
+}
+
+.belle-common-filter-likeright .belle-common-triggers-filter-default,
+.belle-common-filter-likeright .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-likeright .x-form-trigger-over
+{
+	background-image:url(../js/extjs/packages/ext-theme-classic/images/grid/dd-insert-arrow-left.gif);
+	background-position:0px 2px;
+	
+}
+
+.belle-common-filter-likeright .belle-common-triggers-filter-default{
+	border-top:1px solid #b5b8c8;
+}
+.belle-common-filter-likeright .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-likeright .x-form-trigger-default.x-form-trigger-focus
+.belle-common-filter-likeright .x-form-trigger-default.x-form-trigger-over{
+	border:1px 1px 1px 1px;
+	border-color:#7eadd9;
+	border-style:solid;
+}
+
+
+.belle-common-filter-more .belle-common-triggers-filter-default,
+.belle-common-filter-more .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-more .x-form-trigger-over
+{
+	background-image:url(../js/extjs/packages/ext-theme-classic/images/grid/filters/greater_than.png);
+	background-position:0px 2px;
+}
+
+
+.belle-common-filter-more .belle-common-triggers-filter-default{
+	border-top:1px solid #b5b8c8;
+}
+.belle-common-filter-more .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-more .x-form-trigger-default.x-form-trigger-over{
+	border:1px 1px 1px 0px;
+	border-color:#7eadd9;
+	border-style:solid;
+}
+
+.belle-common-filter-less .belle-common-triggers-filter-default,
+.belle-common-filter-less .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-less .x-form-trigger-over
+{
+	background-image:url(../js/extjs/packages/ext-theme-classic/images/grid/filters/less_than.png);
+	background-position:0px 2px;
+}
+
+.belle-common-filter-less .belle-common-triggers-filter-default{
+	border-top:1px solid #b5b8c8;
+}
+.belle-common-filter-less .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-less .x-form-trigger-default.x-form-trigger-over{
+	border:1px 1px 1px 0px;
+	border-color:#7eadd9;
+	border-style:solid;
+}
+
+.belle-common-filter-equal .belle-common-triggers-filter-default,
+.belle-common-filter-equal .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-equal .x-form-trigger-over
+{
+	background-image:url(../js/extjs/packages/ext-theme-classic/images/grid/filters/equals.png);
+	background-position:0px 2px;
+}
+
+.belle-common-filter-equal .belle-common-triggers-filter-default{
+	border-top:1px solid #b5b8c8;
+}
+.belle-common-filter-equal .x-form-trigger-default.x-form-trigger-over.x-form-trigger-focus,
+.belle-common-filter-equal .x-form-trigger-default.x-form-trigger-over{
+	border:1px 1px 1px 0px;
+	border-color:#7eadd9;
+	border-style:solid;
+}
+
+.grid-filter-hide .bellefilter-common-body{
+	display:none;
+}
+
+
+.x-form-item-default.x-item-disabled{
+	filter: alpha(opacity=100);
+  	opacity: 1;
+}
+
+.x-item-disabled .x-form-text-default{
+	background-color: #EBEBE4;
+  	background-image: none;
+}
+
+.x-form-readonly .x-form-text-default{
+	background-color: #EBEBE4;
+  	background-image: none;
+}
+
+
+.belle-export{
+	background-image:none;
+}
+
+.belle-export-select{
+	background-image:url(../images/select.png);
+}
+
+
+.belle-btn-icon-left{
+	background-image:url(../images/arrow_left.png);
+}
+
+.belle-btn-icon-right{
+	background-image:url(../images/arrow_right.png);
+}
+
+.belle-btn-icon-down{
+	background-image:url(../images/arrow_down.png);
+}
+
+.belle-btn-icon-up{
+	background-image:url(../images/arrow_up.png);
+}
+
+.belle-import-des{
+	background-color: rgb(249, 237, 184);
+	border: solid 1px rgb(237, 201, 103);
+	border-radius: 2px;
+	font-weight: bold;
+	padding: 6px 6px 6px 6px;
+	text-align: center;
+	align-content: center;
+}
+
+
+.x-boundlist-selected .combo-multi{
+	height: 13px;
+  	width: 13px;
+  	background-image: url(../js/extjs/packages/ext-theme-classic/images/form/checkbox.gif);
+  	line-height: 13px;
+  	margin-right:5px;
+  	background-position: 0px -13px;
+}
+
+.x-boundlist .combo-multi{
+	margin-top:5px;
+	height: 13px;
+	width: 13px;
+	background-image: url(../js/extjs/packages/ext-theme-classic/images/form/checkbox.gif);
+	line-height: 13px;
+	float: left;
+	margin-right:5px;
+}
+
+.x-boundlist-item-readonly .combo-multi{
+	margin-top:5px;
+	height: 13px;
+	width: 13px;
+	background-image: url(../js/extjs/packages/ext-theme-classic/images/form/checkbox.gif);
+	line-height: 13px;
+	float: left;
+	margin-right:5px;
+	  background-position: -39px -0px;
+}
+
+#app-header-srm-logo {
+	width: 150px;
+	height: 50px;
+	background: url(../images/blsrm.png) no-repeat center center;
+	background-size: 90%;
+	/*border-right: solid #5b8dab 1px;*/
+	margin-left: 12px;
+}
+
+
+.x-docked-server-summary {
+    border-width: 1px;
+    border-color: #99bce8;
+    border-style: solid;
+    background: white!important
+}
+
+.x-docked-server-summary .x-grid-table {
+    border: 0 none
+}
+
+.x-grid-row-server-summary .x-grid-cell,.x-grid-row-server-summary .x-grid-rowwrap,.x-grid-row-server-summary .x-grid-cell-rowbody {
+    border-color: #ededed;
+    background-color: white!important;
+    border-top: 1px solid #ededed;
+    font: normal 11px/13px tahoma,arial,verdana,sans-serif
+}
+
+.x-docked-server-summary .x-grid-item,.x-docked-server-summary .x-grid-row-server-summary .x-grid-cell {
+    border-bottom: 0 none;
+    border-top: 0 none
+}
+
+.x-grid-row-server-summary .x-grid-cell-inner-row-expander {
+    display: none
+}
+
+.x-grid-rows-worm{
+    background-color: #F9F45A;
+}

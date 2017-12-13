@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="CodegenPlugin.contribution1"
+            nameFilter="generatorConfig.xml"
+            objectClass="org.eclipse.core.resources.IFile">
+
+         <action
+               class="com.wonhigh.mybatis.plugin.codegenplugin.popup.actions.CodegenAction"
+               icon="icons/mybatis.ico"
+               enablesFor="1"
+               id="com.wonhigh.mybatis.plugin.codegenplugin.popup.actions.CodegenAction"
+               label="Generator WonHigh SQL Query"
+               menubarPath="additions">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="msc.mapper.LoginRightMapper" >
+  <!-- user -->
+  <resultMap id="UserResultMap" type="msc.entiry.SCUser" >
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="login_code" property="loginCode" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectUser" resultMap="UserResultMap" parameterType="map" >
+    SELECT 
+    	user_id,login_code,user_name,password,card_id,email,telephone,address,creator,create_time
+    FROM sc_user
+    WHERE 1=1
+    <if test="params.userId != null" >
+       and user_id = #{params.userId,jdbcType=BIGINT}
+    </if>
+    <if test="params.loginCode != null" >
+       login_code = #{params.loginCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <insert id="insertUser" parameterType="msc.entiry.SCUser" >
+    INSERT INTO sc_user ( user_id, login_code, 
+      user_name, password, card_id, 
+      email, telephone, address,
+      creator, create_time)
+    VALUES ( #{userId,jdbcType=BIGINT}, #{loginCode,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{address,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <delete id="deleteUser" parameterType="msc.entiry.SCUser"  >
+    DELETE FROM sc_user
+    WHERE 1=1
+    <if test="userId != null" >
+       user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="loginCode != null" >
+       login_code = #{loginCode,jdbcType=VARCHAR}
+    </if>
+  </delete>
+  <update id="updateUser" parameterType="msc.entiry.SCUser" >
+    UPDATE sc_user
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null" >
+        card_id = #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE 1=1
+     <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+     </if>
+     <if test="loginCode != null" >
+        login_code = #{loginCode,jdbcType=VARCHAR},
+     </if>
+  </update>
+  
+  <!-- role -->
+  <resultMap id="RoleResultMap" type="msc.entiry.SCRole" >
+    <result column="role_id" property="roleId" jdbcType="BIGINT" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectRole" resultMap="RoleResultMap" parameterType="map" >
+    SELECT 
+    	role_id,role_code,role_name,remarks,creator,create_time
+    FROM sc_role
+    WHERE 1=1
+    <if test="params.roleId != null" >
+       role_id = #{params.roleId,jdbcType=BIGINT}
+    </if>
+    <if test="params.roleCode != null" >
+       role_code = #{params.roleCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <insert id="insertRole" parameterType="msc.entiry.SCRole" >
+    INSERT INTO sc_role ( role_id, role_code, 
+      role_name, remarks ,creator, create_time)
+    VALUES ( #{roleId,jdbcType=BIGINT}, #{roleCode,jdbcType=VARCHAR}, 
+      #{roleName,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <delete id="deleteRole" parameterType="msc.entiry.SCRole"  >
+    DELETE FROM sc_role
+    WHERE 1=1
+    <if test="roleId != null" >
+       role_id = #{roleId,jdbcType=BIGINT}
+    </if>
+    <if test="roleCode != null" >
+       role_code = #{roleCode,jdbcType=VARCHAR}
+    </if>
+  </delete>
+  <update id="updateRole" parameterType="msc.entiry.SCRole" >
+    UPDATE sc_role
+    <set >
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE 1=1
+     <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=VARCHAR},
+     </if>
+     <if test="roleCode != null" >
+        role_code = #{roleCode,jdbcType=VARCHAR},
+     </if>
+  </update>
+  
+  <!-- resource -->
+  <resultMap id="ResourceResultMap" type="msc.entiry.SCResource" >
+    <result column="resource_id" property="resourceId" jdbcType="BIGINT" />
+    <result column="resource_url" property="resourceUrl" jdbcType="VARCHAR" />
+    <result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
+    <result column="topic" property="topic" jdbcType="VARCHAR" />
+    <result column="operation" property="operation" jdbcType="INTEGER" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectResource" resultMap="ResourceResultMap" parameterType="map" >
+    SELECT 
+    	resource_id,resource_url,resource_name,topic,operation,
+    	describe,remarks,creator,create_time
+    FROM sc_resource
+    WHERE 1=1
+    <if test="params.resourceId != null" >
+       resource_id = #{params.resourceId,jdbcType=BIGINT}
+    </if>
+    <if test="params.resourceUrl != null" >
+       resource_url = #{params.resourceUrl,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <insert id="insertResource" parameterType="msc.entiry.SCResource" >
+    INSERT INTO sc_resource ( resource_id, resource_url, 
+      resource_name, topic, operation, describe, remarks ,creator, create_time)
+    VALUES ( #{resourceId,jdbcType=BIGINT}, #{resourceUrl,jdbcType=VARCHAR}, 
+      #{resourceName,jdbcType=VARCHAR}, #{topic,jdbcType=VARCHAR},#{operation,jdbcType=INTEGER}, 
+      #{describe,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <delete id="deleteResource" parameterType="msc.entiry.SCResource"  >
+    DELETE FROM sc_resource
+    WHERE 1=1
+    <if test="resourceId != null" >
+       resource_id = #{resourceId,jdbcType=BIGINT}
+    </if>
+    <if test="resourceUrl != null" >
+       resource_url = #{resourceUrl,jdbcType=VARCHAR}
+    </if>
+  </delete>
+  <update id="updateResource" parameterType="msc.entiry.SCResource" >
+    UPDATE sc_resource
+    <set >
+      <if test="resourceName != null" >
+        resource_name = #{resourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="topic != null" >
+        topic = #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null" >
+        operation = #{operation,jdbcType=INTEGER},
+      </if>
+      <if test="describe != null" >
+        describe = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE 1=1
+     <if test="resourceId != null" >
+        resource_id = #{resourceId,jdbcType=VARCHAR},
+     </if>
+     <if test="resourceUrl != null" >
+        resource_url = #{resourceUrl,jdbcType=VARCHAR},
+     </if>
+  </update>
+  
+  <!-- operation -->
+  <resultMap id="OperationResultMap" type="msc.entiry.SCOperation" >
+    <result column="operation_id" property="operationId" jdbcType="BIGINT" />
+    <result column="operation" property="operation" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="INTEGER" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectOperation" resultMap="OperationResultMap" parameterType="map" >
+    SELECT 
+    	operation_id,operation,value,topic,describe,
+    	remarks,creator,create_time
+    FROM sc_resource
+    WHERE 1=1
+    <if test="params.operationId != null" >
+        operation_id = #{params.operationId,jdbcType=BIGINT}
+    </if>
+    <if test="params.operation != null" >
+       operation = #{params.operation,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <insert id="insertOperation" parameterType="msc.entiry.SCOperation" >
+    INSERT INTO sc_operation ( operation_id, operation, 
+      value, describe, remarks ,creator, create_time)
+    VALUES ( #{operationId,jdbcType=BIGINT}, #{operation,jdbcType=VARCHAR}, 
+      #{value,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <delete id="deleteOperation" parameterType="msc.entiry.SCOperation"  >
+    DELETE FROM sc_operation
+    WHERE 1=1
+    <if test="resourceId != null" >
+       operation_id = #{operationId,jdbcType=BIGINT}
+    </if>
+    <if test="operation != null" >
+       operation = #{operation,jdbcType=VARCHAR}
+    </if>
+  </delete>
+  <update id="updateOperation" parameterType="msc.entiry.SCOperation" >
+    UPDATE sc_operation
+    <set >
+      <if test="operation != null" >
+        operation = #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        value = #{value,jdbcType=INTEGER},
+      </if>
+      <if test="describe != null" >
+        describe = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE 1=1
+     <if test="resourceId != null" >
+        resource_id = #{resourceId,jdbcType=VARCHAR},
+     </if>
+     <if test="resourceUrl != null" >
+        resource_url = #{resourceUrl,jdbcType=VARCHAR},
+     </if>
+  </update>
+   
+  <!-- user-role -->
+  <resultMap id="UserRoleResultMap" type="msc.entiry.SCUserRole" >
+    <result column="id" property="Id" jdbcType="BIGINT" />
+    <result column="user_code" property="userCode" jdbcType="VARCHAR" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectUserRole" resultMap="UserRoleResultMap" parameterType="map" >
+    SELECT 
+    	id,user_code,role_code,
+    	remarks,creator,create_time
+    FROM sc_resource
+    WHERE 1=1
+    <if test="params.userCode != null" >
+        user_code = #{params.userCode,jdbcType=BIGINT}
+    </if>
+    <if test="params.roleCode != null" >
+       role_code = #{params.roleCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <insert id="insertUserRole" parameterType="msc.entiry.SCUserRole" >
+    INSERT INTO sc_user_role ( id, user_code, role_code,
+     	remarks ,creator, create_time)
+    VALUES ( #{Id,jdbcType=BIGINT}, #{userCode,jdbcType=VARCHAR}, 
+      #{roleCode,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <delete id="deleteUserRole" parameterType="msc.entiry.SCUserRole"  >
+    DELETE FROM sc_user_role
+    WHERE 1=1
+    <if test="userCode != null" >
+       user_code = #{userCode,jdbcType=VARCHAR}
+    </if>
+    <if test="roleCode != null" >
+       role_code = #{roleCode,jdbcType=VARCHAR}
+    </if>
+  </delete>
+  <update id="updateUserRole" parameterType="msc.entiry.SCUserRole" >
+    UPDATE sc_user_role
+    <set >
+      <if test="operation != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    WHERE 1=1
+     <if test="userCode != null" >
+        user_code = #{userCode,jdbcType=VARCHAR}
+     </if>
+     <if test="roleCode != null" >
+        role_code = #{roleCode,jdbcType=VARCHAR}
+     </if>
+  </update>
+   
+  <!-- role-right -->
+  <resultMap id="RoleRightResultMap" type="msc.entiry.SCRoleRight" >
+    <result column="id" property="Id" jdbcType="BIGINT" />
+    <result column="resource_url" property="resourceUrl" jdbcType="VARCHAR" />
+    <result column="operation" property="operation" jdbcType="VARCHAR" />
+    <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectRoleRight" resultMap="RoleRightResultMap" parameterType="map" >
+    SELECT 
+    	id,resource_url,operation,role_code,
+    	remarks,creator,create_time
+    FROM sc_resource
+    WHERE 1=1
+    <if test="params.resourceUrl != null" >
+        resource_url = #{params.resourceUrl,jdbcType=BIGINT}
+    </if>
+    <if test="params.roleCode != null" >
+       role_code = #{params.roleCode,jdbcType=VARCHAR}
+    </if>
+    <if test="params.operation != null" >
+       operation = #{operation.roleCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <insert id="insertRoleRight" parameterType="msc.entiry.SCRoleRight" >
+    INSERT INTO sc_role_right ( id, resource_url, operation,role_code,
+     	remarks ,creator, create_time)
+    VALUES ( #{Id,jdbcType=BIGINT}, #{resourceUrl,jdbcType=VARCHAR}, 
+      #{operation,jdbcType=VARCHAR},#{roleCode,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <delete id="deleteRoleRight" parameterType="msc.entiry.SCRoleRight"  >
+    DELETE FROM sc_role_right
+    WHERE 1=1
+    <if test="resourceUrl != null" >
+       resource_url = #{resourceUrl,jdbcType=VARCHAR}
+    </if>
+    <if test="operation != null" >
+       operation = #{operation,jdbcType=VARCHAR}
+    </if>
+    <if test="roleCode != null" >
+       role_code = #{roleCode,jdbcType=VARCHAR}
+    </if>
+  </delete>
+  <update id="updateRoleRight" parameterType="msc.entiry.SCRoleRight" >
+    UPDATE sc_role_right
+    <set >
+      <if test="operation != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    WHERE 1=1
+     <if test="resourceUrl != null" >
+        resource_url = #{resourceUrl,jdbcType=VARCHAR}
+     </if>
+     <if test="operation != null" >
+        operation = #{operation,jdbcType=VARCHAR}
+     </if>
+     <if test="roleCode != null" >
+        role_code = #{roleCode,jdbcType=VARCHAR}
+     </if>
+  </update>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<properties url="file:///D:/mybatis-gen/mybatis-ibator-conf.properties"/>
+	<classPathEntry location="${mysql.jar.path}" />
+	<context id="context1" targetRuntime="MyBatis3">
+		
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		
+		<jdbcConnection 
+			driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://172.20.32.37:3306/test?useUnicode=true&amp;characterEncoding=utf-8"
+			userId="user_admin" 
+			password="user_admin" />
+	
+		<javaTypeResolver > 
+        <property name="forceBigDecimals" value="false" /> 
+          <!-- 
+          	number(默认为38位),当长度超过18位时无法强制转换decimal
+                                默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer 
+            true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal 
+        	--> 
+        </javaTypeResolver>
+			
+		<javaModelGenerator targetPackage="com.belle.scm.pd.dao.entity"	targetProject="blf1-pd-dao" />
+		
+		<jsMVCGenerator targetPackage="com.belle.scm.pd.web"	targetProject="blf1-pd-web" />
+
+		
+		<sqlMapGenerator targetPackage="mapper" targetProject="blf1-pd-dao/src/main/resources"/>
+		<javaClientGenerator targetPackage="com.belle.scm.pd.dao.mapper" targetProject="blf1-pd-dao" type="XMLMAPPER">
+			<property name="interfaceExtendSupInterface" value="com.belle.scm.common.base.mapper.BaseCrudMapper"/>
+			<property name="enableInterfaceSupInterfaceGenericity" value="false"/>
+			<property name="exclusionsMethods" value="countByQuery,deleteByQuery,deleteByPrimaryKey,insert,insertSelective,selectByQuery,selectByQueryWithBLOBs,selectByPrimaryKey,selectCount,selectByPage,updateByQuery,updateByQueryWithBLOBs,updateByPrimaryKeySelective,updateByPrimaryKeyWithBLOBs"/> 
+		</javaClientGenerator>
+			
+	    
+		<javaServiceGenerator targetPackage="com.belle.scm.pd.service" implementationPackage="com.belle.scm.pd.service.impl" targetProject="blf1-pd-service" 
+		interfaceExtendSupInterface="com.belle.scm.common.base.service.BaseCrudService" enableInterfaceSupInterfaceGenericity="false"
+		extendSupClass="com.belle.scm.common.base.service.BaseCrudServiceImpl" enableSupClassGenericity="false" />
+		
+		<javaDaoGenerator targetPackage="com.belle.scm.pd.dao.dal" implementationPackage="com.belle.scm.pd.dao.dal.impl" targetProject="blf1-pd-dao" 
+		interfaceExtendSupInterface="com.belle.scm.common.base.dal.BaseCrudDao" enableInterfaceSupInterfaceGenericity="false"
+		extendSupClass="com.belle.scm.common.base.dal.BaseCrudDaoImpl" enableSupClassGenericity="false" />
+			
+		<javaControllerGenerator targetPackage="com.belle.scm.pd.web.controller" targetProject="blf1-pd-web" 
+		extendSupClass="com.belle.scm.common.base.web.BaseCrudController" enableSupClassGenericity="true" />
+        
+        <tableSetting isSchema="true" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+			<prop name="replaceTablePrefix">
+				<list>
+					<prefix name="" value="" />
+				</list>
+			</prop>
+			<!-- 忽略schema，避免在xml中出现schema.表名      -->  
+			<prop name="ignoreGeneratorSchema" value="true"/>
+		</tableSetting>
+        
+	</context>
+</generatorConfiguration>

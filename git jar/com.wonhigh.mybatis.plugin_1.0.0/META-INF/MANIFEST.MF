@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: com.wonhigh.mybatis.plugin
+Bundle-SymbolicName: com.wonhigh.mybatis.plugin;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: com.wonhigh.mybatis.plugin.codegenplugin.Activator
+Bundle-Vendor: Wu.gy
+Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.co
+ re.resources,org.eclipse.ui.console;bundle-version="3.5.100"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/freemarker.jar,lib/dom4j-1.6.1.jar,lib/jsqlparse
+ r-0.9.1.jar,lib/mysql-connector-java-5.1.32.jar,.
+

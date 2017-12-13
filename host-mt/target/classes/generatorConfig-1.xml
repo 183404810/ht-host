@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<properties url="file:///D:/mybatis-gen/mybatis-ibator-conf.properties"/>
+	<classPathEntry location="${mysql.jar.path}" />
+	<context id="context1" targetRuntime="MyBatis3">
+		
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		
+		<jdbcConnection
+			driverClass="com.mysql.jdbc.Driver"	
+			connectionURL="jdbc:mysql://localhost:3306/mt_sc?useUnicode=true&amp;characterEncoding=utf-8"
+			userId="root" 
+			password="" />				
+	
+		<javaTypeResolver > 
+        <property name="forceBigDecimals" value="false" /> 
+          <!-- 
+          	number(默认为38位),当长度超过18位时无法强制转换decimal
+                                默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer 
+            true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal 
+        	--> 
+        </javaTypeResolver>
+			
+		<javaModelGenerator targetPackage="msc.entity"	targetProject="host-mt" />
+		<jsMVCGenerator targetPackage="msc.web"	targetProject="host-mt" />
+		
+		<sqlMapGenerator targetPackage="mapper" targetProject="host-mt/src/main/resources"/>
+		<javaClientGenerator targetPackage="msc.mapper" targetProject="host-mt" type="XMLMAPPER">
+			<property name="interfaceExtendSupInterface" value="ht.msc.base.BaseMapper"/>
+			<property name="enableInterfaceSupInterfaceGenericity" value="false"/>
+			<property name="exclusionsMethods" value="countByQuery,deleteByQuery,deleteByPrimaryKey,insert,insertSelective,selectByQuery,selectByQueryWithBLOBs,selectByPrimaryKey,selectCount,selectByPage,updateByQuery,updateByQueryWithBLOBs,updateByPrimaryKeySelective,updateByPrimaryKeyWithBLOBs"/> 
+		</javaClientGenerator>
+			
+		<javaServiceGenerator targetPackage="msc.service" targetProject="host-mt" 
+		extendSupClass="ht.msc.base.BaseService" enableSupClassGenericity="false" />
+		
+		<javaDaoGenerator targetPackage="msc.dao" targetProject="host-mt" 
+		extendSupClass="ht.msc.base.BaseDao" enableSupClassGenericity="false" />
+			
+		<javaControllerGenerator targetPackage="msc.controller" targetProject="host-mt" 
+		extendSupClass="ht.msc.base.BaseController" enableSupClassGenericity="true" />
+        
+        <tableSetting isSchema="true" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+			<prop name="replaceTablePrefix">
+				<list>
+					<prefix name="" value="" />
+				</list>
+			</prop>
+			<!-- 忽略schema，避免在xml中出现schema.表名      -->  
+			<prop name="ignoreGeneratorSchema" value="true"/>
+		</tableSetting>
+        
+	</context>
+</generatorConfiguration>

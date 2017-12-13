@@ -1,0 +1,114 @@
+ 	<resultMap id="SelectListByVoAAAModelMap" type="MyTestModel" >
+ 	 	<id column="app_code" property="appCode" jdbcType="VARCHAR" />
+ 	 	<result column="app_name" property="appName" jdbcType="VARCHAR" />
+ 	 	<result column="project_code" property="projectCode" jdbcType="VARCHAR" />
+ 	 	<result column="enable_flag" property="enableFlag" jdbcType="INT" />
+ 	 	<result column="app_url" property="appUrl" jdbcType="VARCHAR" />
+ 	 	<result column="js_url" property="jsUrl" jdbcType="VARCHAR" />
+ 	 	<result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+ 	 	<result column="image_name" property="imageName" jdbcType="VARCHAR" />
+ 	 	<result column="order_no" property="orderNo" jdbcType="INT" />
+ 	 	<result column="creator" property="creator" jdbcType="VARCHAR" />
+ 	 	<result column="create_time" property="createTime" jdbcType="DATETIME" />
+ 	 	<result column="modifier" property="modifier" jdbcType="VARCHAR" />
+ 	 	<result column="modify_time" property="modifyTime" jdbcType="DATETIME" />
+ 	 	<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+ 	 	<result column="menu_no" property="menuNo" jdbcType="INT" />
+ 	 	<result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+ 	 	<result column="module_no" property="moduleNo" jdbcType="INT" />
+ 	 	<result column="parent_menu_no" property="parentMenuNo" jdbcType="INT" />
+ 	 	<result column="search_code" property="searchCode" jdbcType="VARCHAR" />
+ 	 	<result column="level_no" property="levelNo" jdbcType="INT" />
+ 	 	<result column="begin_group" property="beginGroup" jdbcType="INT" />
+ 	 	<result column="module_code" property="moduleCode" jdbcType="VARCHAR" />
+ 	 	<result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+ 	 	<result column="is_report" property="isReport" jdbcType="INT" />
+ 	 	<result column="module_url" property="moduleUrl" jdbcType="VARCHAR" />
+ 	 	<result column="right_value" property="rightValue" jdbcType="INT" />
+ 	 	<result column="hint" property="hint" jdbcType="VARCHAR" />
+ 	</resultMap>
+
+ 	<select id="SelectListByVoAAAModel" resultMap="SelectListByVoAAAModelMap" parameterType="map">
+ 	 select a.menu_no,a.menu_name,a.parent_menu_no,a.module_no,CONCAT(c.app_url,d.module_url) url,d.right_value rights,c.js_url,  		c.app_url,c.app_code,  		d.module_url,d.right_value,d.module_code,  		case when a.module_no is null then 'false' else 'true' end leaf  	from itg_menu_list a	left join itg_module_list d on a.module_no = d.module_no and d.enable_flag=1	left join itg_application c on d.app_no = c.app_no and c.enable_flag=1	where a.project_code='BLF1'	and exists    (        select 1		from itg_module_list x         inner join itg_menu_list y on x.module_no = y.module_no         inner join itg_application z on x.app_no=z.app_no and z.enable_flag=1        where x.enable_flag=1 and a.project_code = y.project_code and y.search_code like concat(a.search_code ,'%')    )	order by a.level_no,a.order_no
+ 	 	<if test="appCode != null" >
+ 	 	 	and app_code=#{appCode}
+ 	 	</if>
+ 	 	<if test="appName != null" >
+ 	 	 	and app_name=#{appName}
+ 	 	</if>
+ 	 	<if test="projectCode != null" >
+ 	 	 	and project_code=#{projectCode}
+ 	 	</if>
+ 	 	<if test="enableFlag != null" >
+ 	 	 	and enable_flag=#{enableFlag}
+ 	 	</if>
+ 	 	<if test="appUrl != null" >
+ 	 	 	and app_url=#{appUrl}
+ 	 	</if>
+ 	 	<if test="jsUrl != null" >
+ 	 	 	and js_url=#{jsUrl}
+ 	 	</if>
+ 	 	<if test="imageUrl != null" >
+ 	 	 	and image_url=#{imageUrl}
+ 	 	</if>
+ 	 	<if test="imageName != null" >
+ 	 	 	and image_name=#{imageName}
+ 	 	</if>
+ 	 	<if test="orderNo != null" >
+ 	 	 	and order_no=#{orderNo}
+ 	 	</if>
+ 	 	<if test="creator != null" >
+ 	 	 	and creator=#{creator}
+ 	 	</if>
+ 	 	<if test="createTime != null" >
+ 	 	 	and create_time=#{createTime}
+ 	 	</if>
+ 	 	<if test="modifier != null" >
+ 	 	 	and modifier=#{modifier}
+ 	 	</if>
+ 	 	<if test="modifyTime != null" >
+ 	 	 	and modify_time=#{modifyTime}
+ 	 	</if>
+ 	 	<if test="remarks != null" >
+ 	 	 	and remarks=#{remarks}
+ 	 	</if>
+ 	 	<if test="menuNo != null" >
+ 	 	 	and menu_no=#{menuNo}
+ 	 	</if>
+ 	 	<if test="menuName != null" >
+ 	 	 	and menu_name=#{menuName}
+ 	 	</if>
+ 	 	<if test="moduleNo != null" >
+ 	 	 	and module_no=#{moduleNo}
+ 	 	</if>
+ 	 	<if test="parentMenuNo != null" >
+ 	 	 	and parent_menu_no=#{parentMenuNo}
+ 	 	</if>
+ 	 	<if test="searchCode != null" >
+ 	 	 	and search_code=#{searchCode}
+ 	 	</if>
+ 	 	<if test="levelNo != null" >
+ 	 	 	and level_no=#{levelNo}
+ 	 	</if>
+ 	 	<if test="beginGroup != null" >
+ 	 	 	and begin_group=#{beginGroup}
+ 	 	</if>
+ 	 	<if test="moduleCode != null" >
+ 	 	 	and module_code=#{moduleCode}
+ 	 	</if>
+ 	 	<if test="moduleName != null" >
+ 	 	 	and module_name=#{moduleName}
+ 	 	</if>
+ 	 	<if test="isReport != null" >
+ 	 	 	and is_report=#{isReport}
+ 	 	</if>
+ 	 	<if test="moduleUrl != null" >
+ 	 	 	and module_url=#{moduleUrl}
+ 	 	</if>
+ 	 	<if test="rightValue != null" >
+ 	 	 	and right_value=#{rightValue}
+ 	 	</if>
+ 	 	<if test="hint != null" >
+ 	 	 	and hint=#{hint}
+ 	 	</if>
+ 	</select>   
