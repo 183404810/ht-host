@@ -33,8 +33,10 @@ public class YouGouDaoGenerator extends AbstractJavaGenerator
 
     String dalpackagestr = type.toString();
 
-    String Mybatis3JavaBaseCrudMapperType = "com.belle.scm.common.base.mapper.BaseCrudMapper";
-    String Mybatis3JavaMapperType = dalpackagestr.substring(0, dalpackagestr.indexOf("dal")) + "mapper." + modelName + "Mapper";
+    //String Mybatis3JavaBaseCrudMapperType = "com.belle.scm.common.base.mapper.BaseCrudMapper";
+    String Mybatis3JavaBaseCrudMapperType = "msc.mapper.BaseMapper";
+    //String Mybatis3JavaMapperType = dalpackagestr.substring(0, dalpackagestr.indexOf("dal")) + "mapper." + modelName + "Mapper";
+    String Mybatis3JavaMapperType = dalpackagestr.substring(0, dalpackagestr.indexOf("dao")) + "mapper." + modelName + "Mapper";
     TopLevelClass c = new TopLevelClass(new FullyQualifiedJavaType(this.introspectedTable.getMyBatis3JavaDaoImplType()));
     c.addImportedType(new FullyQualifiedJavaType("javax.annotation.Resource"));
     c.addImportedType(new FullyQualifiedJavaType("org.springframework.stereotype.Repository"));

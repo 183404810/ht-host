@@ -131,14 +131,15 @@ public class MyBatisGenerator
       this.generatedJavaFiles.size() + this.generatedJSFiles.size());
 
     Shell shell = new Shell(new Display(), 16793600);
+    File targetFile=null;
+    String source=null;
     for (GeneratedXmlFile gxf : this.generatedXmlFiles) {
       this.projects.add(gxf.getTargetProject());
       try
       {
         File directory = this.shellCallback.getDirectory(gxf
           .getTargetProject(), gxf.getTargetPackage());
-        File targetFile = new File(directory, gxf.getFileName());
-        String source;
+        targetFile = new File(directory, gxf.getFileName());
         if (targetFile.exists())
         {
           boolean flag = MessageDialog.openConfirm(shell, "确认", "是否覆盖" + targetFile.getName() + "文件");
@@ -191,8 +192,6 @@ public class MyBatisGenerator
       } catch (ShellException e) {
         this.warnings.add(e.getMessage());
       }
-      String source = null;
-      File targetFile = null;
       callback.checkCancel();
       callback.startTask(Messages.getString(
         "Progress.15", targetFile.getName()));
@@ -205,8 +204,7 @@ public class MyBatisGenerator
       {
         File directory = this.shellCallback.getDirectory(gjf
           .getTargetProject(), gjf.getTargetPackage());
-        File targetFile = new File(directory, gjf.getFileName());
-        String source;
+        targetFile = new File(directory, gjf.getFileName());
         if (targetFile.exists())
         {
           boolean flag = MessageDialog.openConfirm(shell, "确认", "是否覆盖" + targetFile.getName() + "文件");
@@ -256,7 +254,6 @@ public class MyBatisGenerator
         String fileCommentLines = ((String)gjf.getCompilationUnit().getFileCommentLines().get(0)).toLowerCase();
 
         File directory = this.shellCallback.getDirectory(gjf.getTargetProject(), gjf.getTargetPackage());
-        File targetFile;
         if (fileCommentLines.equals("view_default")) {
           directory = getModuleDirectory(directory, modulePath);
           targetFile = new File(directory.toString() + "\\" + sourceFileName.replace("Model", ""));
@@ -281,7 +278,6 @@ public class MyBatisGenerator
           }
         }
         Tools.writeLine("directory:" + directory + " :targetFile" + targetFile);
-        String source;
         if (targetFile.exists()) {
           boolean flag = MessageDialog.openConfirm(shell, "确认", "是否覆盖" + targetFile.getName() + "文件");
           if (!flag)

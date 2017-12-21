@@ -284,22 +284,22 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable
   {
     List answer = new ArrayList();
     Iterator localIterator2;
-    for (Iterator localIterator1 = this.jsMVCGenerators.iterator(); localIterator1.hasNext(); 
-      localIterator2.hasNext())
+    for (Iterator localIterator1 = this.jsMVCGenerators.iterator(); localIterator1.hasNext();)
     {
       AbstractJSGenerator jsGenerator = (AbstractJSGenerator)localIterator1.next();
       List compilationUnits = jsGenerator.getCompilationUnits();
+      if(compilationUnits==null) continue;
       localIterator2 = compilationUnits.iterator(); 
-      //continue; 
-      CompilationUnit compilationUnit = (CompilationUnit)localIterator2.next();
-      GeneratedJSFile gjf = new GeneratedJSFile(compilationUnit, 
-        this.context.getYouGouJSMVCGeneratorConfiguration()
-        .getTargetProject(), 
-        this.context.getProperty("jsFileEncoding"), 
-        this.context.getJavaFormatter());
-      answer.add(gjf);
+      for(;localIterator2.hasNext();){
+	      CompilationUnit compilationUnit = (CompilationUnit)localIterator2.next();
+	      GeneratedJSFile gjf = new GeneratedJSFile(compilationUnit, 
+	        this.context.getYouGouJSMVCGeneratorConfiguration()
+	        .getTargetProject(), 
+	        this.context.getProperty("jsFileEncoding"), 
+	        this.context.getJavaFormatter());
+	      answer.add(gjf);
+      }
     }
-
     return answer;
   }
 
