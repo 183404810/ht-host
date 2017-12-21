@@ -26,7 +26,7 @@ public class ParserEntityResolver
       InputStream is = getClass()
         .getClassLoader()
         .getResourceAsStream(
-        "ht/msc/mybatis/plugin/mybatis-generator-config_1_0.dtd");
+        "ht/msc/mybatis/plugin/mybatis-generator-config_1_1.dtd");
       InputSource ins = new InputSource(is);
 
       return ins;

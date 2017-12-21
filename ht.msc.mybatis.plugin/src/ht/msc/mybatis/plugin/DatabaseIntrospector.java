@@ -159,24 +159,23 @@ public class DatabaseIntrospector
     Iterator localIterator1 = columns
       .entrySet().iterator();
     Iterator tableColumns;
-    for (; localIterator1.hasNext(); 
-      tableColumns.hasNext())
+    for (;localIterator1.hasNext();)
     {
       Map.Entry entry = (Map.Entry)localIterator1.next();
-      tableColumns = ((List)entry.getValue())
-        .iterator();
-      //continue;
-      IntrospectedColumn introspectedColumn = (IntrospectedColumn)tableColumns.next();
-
-      if (tc
-        .isColumnIgnored(introspectedColumn
-        .getActualColumnName())) {
-        tableColumns.remove();
-        if (this.logger.isDebugEnabled())
-          this.logger.debug(Messages.getString("Tracing.3", 
-            introspectedColumn.getActualColumnName(), 
-            ((ActualTableName)entry
-            .getKey()).toString()));
+      if(entry==null) continue;
+      tableColumns = ((List)entry.getValue()).iterator();
+      for(;tableColumns.hasNext();){
+	      IntrospectedColumn introspectedColumn = (IntrospectedColumn)tableColumns.next();
+	      if (tc
+	        .isColumnIgnored(introspectedColumn
+	        .getActualColumnName())) {
+	        tableColumns.remove();
+	        if (this.logger.isDebugEnabled())
+	          this.logger.debug(Messages.getString("Tracing.3", 
+	            introspectedColumn.getActualColumnName(), 
+	            ((ActualTableName)entry
+	            .getKey()).toString()));
+	      }
       }
     }
   }
@@ -196,88 +195,89 @@ public class DatabaseIntrospector
     Iterator localIterator1 = columns
       .entrySet().iterator();
     Iterator localIterator2;
-    for (; localIterator1.hasNext(); 
-      localIterator2.hasNext())
+    for (; localIterator1.hasNext();)
     {
       Map.Entry entry = (Map.Entry)localIterator1.next();
+      if(entry==null) continue;
       localIterator2 = ((List)entry.getValue()).iterator(); 
-      //continue; 
-      IntrospectedColumn introspectedColumn = (IntrospectedColumn)localIterator2.next();
-      String calculatedColumnName;
-      if (pattern == null) {
-        calculatedColumnName = introspectedColumn
-          .getActualColumnName();
-      } else {
-        Matcher matcher = pattern.matcher(introspectedColumn
-          .getActualColumnName());
-        calculatedColumnName = matcher.replaceAll(replaceString);
+      for( ;localIterator2.hasNext();){
+	      IntrospectedColumn introspectedColumn = (IntrospectedColumn)localIterator2.next();
+	      String calculatedColumnName;
+	      if (pattern == null) {
+	        calculatedColumnName = introspectedColumn
+	          .getActualColumnName();
+	      } else {
+	        Matcher matcher = pattern.matcher(introspectedColumn
+	          .getActualColumnName());
+	        calculatedColumnName = matcher.replaceAll(replaceString);
+	      }
+	
+	      if (StringUtility.isTrue(tc
+	        .getProperty("useActualColumnNames"))) {
+	        introspectedColumn.setJavaProperty(
+	          JavaBeansUtil.getValidPropertyName(calculatedColumnName));
+	      } else if (StringUtility.isTrue(tc
+	        .getProperty("useCompoundPropertyNames"))) {
+	        sb.setLength(0);
+	        sb.append(calculatedColumnName);
+	        sb.append('_');
+	        sb.append(JavaBeansUtil.getCamelCaseString(
+	          introspectedColumn.getRemarks(), true));
+	        introspectedColumn.setJavaProperty(
+	          JavaBeansUtil.getValidPropertyName(sb.toString()));
+	      } else {
+	        introspectedColumn.setJavaProperty(
+	          JavaBeansUtil.getCamelCaseString(calculatedColumnName, false));
+	      }
+	
+	      FullyQualifiedJavaType fullyQualifiedJavaType = this.javaTypeResolver
+	        .calculateJavaType(introspectedColumn);
+	
+	      if (fullyQualifiedJavaType != null) {
+	        introspectedColumn
+	          .setFullyQualifiedJavaType(fullyQualifiedJavaType);
+	        introspectedColumn.setJdbcTypeName(this.javaTypeResolver
+	          .calculateJdbcTypeName(introspectedColumn));
+	      }
+	      else {
+	        boolean warn = true;
+	        if (tc.isColumnIgnored(introspectedColumn
+	          .getActualColumnName())) {
+	          warn = false;
+	        }
+	
+	        ColumnOverride co = tc.getColumnOverride(introspectedColumn
+	          .getActualColumnName());
+	        if ((co != null) && 
+	          (StringUtility.stringHasValue(co.getJavaType())) && 
+	          (StringUtility.stringHasValue(co.getJavaType()))) {
+	          warn = false;
+	        }
+	
+	        if (warn) {
+	          introspectedColumn
+	            .setFullyQualifiedJavaType(
+	            FullyQualifiedJavaType.getObjectInstance());
+	          introspectedColumn.setJdbcTypeName("OTHER");
+	
+	          String warning = Messages.getString("Warning.14", 
+	            Integer.toString(introspectedColumn.getJdbcType()), 
+	            ((ActualTableName)entry.getKey()).toString(), 
+	            introspectedColumn.getActualColumnName());
+	
+	          this.warnings.add(warning);
+	        }
+	      }
+	
+	      if ((this.context.autoDelimitKeywords()) && 
+	        (SqlReservedWords.containsWord(introspectedColumn
+	        .getActualColumnName()))) {
+	        introspectedColumn.setColumnNameDelimited(true);
+	      }
+	
+	      if (tc.isAllColumnDelimitingEnabled())
+	        introspectedColumn.setColumnNameDelimited(true);
       }
-
-      if (StringUtility.isTrue(tc
-        .getProperty("useActualColumnNames"))) {
-        introspectedColumn.setJavaProperty(
-          JavaBeansUtil.getValidPropertyName(calculatedColumnName));
-      } else if (StringUtility.isTrue(tc
-        .getProperty("useCompoundPropertyNames"))) {
-        sb.setLength(0);
-        sb.append(calculatedColumnName);
-        sb.append('_');
-        sb.append(JavaBeansUtil.getCamelCaseString(
-          introspectedColumn.getRemarks(), true));
-        introspectedColumn.setJavaProperty(
-          JavaBeansUtil.getValidPropertyName(sb.toString()));
-      } else {
-        introspectedColumn.setJavaProperty(
-          JavaBeansUtil.getCamelCaseString(calculatedColumnName, false));
-      }
-
-      FullyQualifiedJavaType fullyQualifiedJavaType = this.javaTypeResolver
-        .calculateJavaType(introspectedColumn);
-
-      if (fullyQualifiedJavaType != null) {
-        introspectedColumn
-          .setFullyQualifiedJavaType(fullyQualifiedJavaType);
-        introspectedColumn.setJdbcTypeName(this.javaTypeResolver
-          .calculateJdbcTypeName(introspectedColumn));
-      }
-      else {
-        boolean warn = true;
-        if (tc.isColumnIgnored(introspectedColumn
-          .getActualColumnName())) {
-          warn = false;
-        }
-
-        ColumnOverride co = tc.getColumnOverride(introspectedColumn
-          .getActualColumnName());
-        if ((co != null) && 
-          (StringUtility.stringHasValue(co.getJavaType())) && 
-          (StringUtility.stringHasValue(co.getJavaType()))) {
-          warn = false;
-        }
-
-        if (warn) {
-          introspectedColumn
-            .setFullyQualifiedJavaType(
-            FullyQualifiedJavaType.getObjectInstance());
-          introspectedColumn.setJdbcTypeName("OTHER");
-
-          String warning = Messages.getString("Warning.14", 
-            Integer.toString(introspectedColumn.getJdbcType()), 
-            ((ActualTableName)entry.getKey()).toString(), 
-            introspectedColumn.getActualColumnName());
-
-          this.warnings.add(warning);
-        }
-      }
-
-      if ((this.context.autoDelimitKeywords()) && 
-        (SqlReservedWords.containsWord(introspectedColumn
-        .getActualColumnName()))) {
-        introspectedColumn.setColumnNameDelimited(true);
-      }
-
-      if (tc.isAllColumnDelimitingEnabled())
-        introspectedColumn.setColumnNameDelimited(true);
     }
   }
 
@@ -292,22 +292,23 @@ public class DatabaseIntrospector
     Iterator localIterator1 = columns
       .entrySet().iterator();
     Iterator localIterator2;
-    for (; localIterator1.hasNext(); 
-      localIterator2.hasNext())
+    for (; localIterator1.hasNext();)
     {
       Map.Entry entry = (Map.Entry)localIterator1.next();
+      if(entry==null)continue;
       localIterator2 = ((List)entry.getValue()).iterator(); 
-      //continue; 
-      IntrospectedColumn introspectedColumn = (IntrospectedColumn)localIterator2.next();
-      if (isMatchedColumn(introspectedColumn, gk))
-        if ((gk.isIdentity()) || (gk.isJdbcStandard())) {
-          introspectedColumn.setIdentity(true);
-          introspectedColumn.setSequenceColumn(false);
-        } else {
-          introspectedColumn.setIdentity(false);
-          introspectedColumn.setSequenceColumn(true);
-        }
-    }
+      for(;localIterator2.hasNext();){
+	      IntrospectedColumn introspectedColumn = (IntrospectedColumn)localIterator2.next();
+	      if (isMatchedColumn(introspectedColumn, gk))
+	        if ((gk.isIdentity()) || (gk.isJdbcStandard())) {
+	          introspectedColumn.setIdentity(true);
+	          introspectedColumn.setSequenceColumn(false);
+	        } else {
+	          introspectedColumn.setIdentity(false);
+	          introspectedColumn.setSequenceColumn(true);
+	        }
+	    }
+  	}
   }
 
   private boolean isMatchedColumn(IntrospectedColumn introspectedColumn, GeneratedKey gk)
@@ -323,56 +324,57 @@ public class DatabaseIntrospector
     Iterator localIterator1 = columns
       .entrySet().iterator();
     Iterator localIterator2;
-    for (; localIterator1.hasNext(); 
-      localIterator2.hasNext())
+    for (; localIterator1.hasNext();)
     {
       Map.Entry entry = (Map.Entry)localIterator1.next();
+      if(entry==null) continue;
       localIterator2 = ((List)entry.getValue()).iterator(); 
-      //continue; 
-      IntrospectedColumn introspectedColumn = (IntrospectedColumn)localIterator2.next();
-      ColumnOverride columnOverride = tc
-        .getColumnOverride(introspectedColumn
-        .getActualColumnName());
-
-      if (columnOverride != null) {
-        if (this.logger.isDebugEnabled()) {
-          this.logger.debug(Messages.getString("Tracing.4", 
-            introspectedColumn.getActualColumnName(), 
-            ((ActualTableName)entry
-            .getKey()).toString()));
-        }
-
-        if (StringUtility.stringHasValue(columnOverride
-          .getJavaProperty())) {
-          introspectedColumn.setJavaProperty(columnOverride
-            .getJavaProperty());
-        }
-
-        if (StringUtility.stringHasValue(columnOverride
-          .getJavaType())) {
-          introspectedColumn
-            .setFullyQualifiedJavaType(new FullyQualifiedJavaType(
-            columnOverride.getJavaType()));
-        }
-
-        if (StringUtility.stringHasValue(columnOverride
-          .getJdbcType())) {
-          introspectedColumn.setJdbcTypeName(columnOverride
-            .getJdbcType());
-        }
-
-        if (StringUtility.stringHasValue(columnOverride
-          .getTypeHandler())) {
-          introspectedColumn.setTypeHandler(columnOverride
-            .getTypeHandler());
-        }
-
-        if (columnOverride.isColumnNameDelimited()) {
-          introspectedColumn.setColumnNameDelimited(true);
-        }
-
-        introspectedColumn.setProperties(columnOverride
-          .getProperties());
+      for(;localIterator2.hasNext();){
+	      IntrospectedColumn introspectedColumn = (IntrospectedColumn)localIterator2.next();
+	      ColumnOverride columnOverride = tc
+	        .getColumnOverride(introspectedColumn
+	        .getActualColumnName());
+	
+	      if (columnOverride != null) {
+	        if (this.logger.isDebugEnabled()) {
+	          this.logger.debug(Messages.getString("Tracing.4", 
+	            introspectedColumn.getActualColumnName(), 
+	            ((ActualTableName)entry
+	            .getKey()).toString()));
+	        }
+	
+	        if (StringUtility.stringHasValue(columnOverride
+	          .getJavaProperty())) {
+	          introspectedColumn.setJavaProperty(columnOverride
+	            .getJavaProperty());
+	        }
+	
+	        if (StringUtility.stringHasValue(columnOverride
+	          .getJavaType())) {
+	          introspectedColumn
+	            .setFullyQualifiedJavaType(new FullyQualifiedJavaType(
+	            columnOverride.getJavaType()));
+	        }
+	
+	        if (StringUtility.stringHasValue(columnOverride
+	          .getJdbcType())) {
+	          introspectedColumn.setJdbcTypeName(columnOverride
+	            .getJdbcType());
+	        }
+	
+	        if (StringUtility.stringHasValue(columnOverride
+	          .getTypeHandler())) {
+	          introspectedColumn.setTypeHandler(columnOverride
+	            .getTypeHandler());
+	        }
+	
+	        if (columnOverride.isColumnNameDelimited()) {
+	          introspectedColumn.setColumnNameDelimited(true);
+	        }
+	
+	        introspectedColumn.setProperties(columnOverride
+	          .getProperties());
+	      }
       }
     }
   }
@@ -480,12 +482,10 @@ public class DatabaseIntrospector
         rs.getString("TABLE_NAME"));
 
       List columns = (List)answer.get(atn);
-      if (columns == null) {
+      if (columns == null) 
         columns = new ArrayList();
-        answer.put(atn, columns);
-      }
-
       columns.add(introspectedColumn);
+      answer.put(atn, columns);
 
       if (this.logger.isDebugEnabled()) {
         this.logger.debug(Messages.getString(

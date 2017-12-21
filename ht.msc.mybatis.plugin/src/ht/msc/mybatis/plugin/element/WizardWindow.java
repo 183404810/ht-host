@@ -87,6 +87,7 @@ public class WizardWindow extends Wizard
     addPage(this.pageOne);
     this.pageTwo = new WizardPageTwo();
     addPage(this.pageTwo);
+     addPage(new WizardPageTwo());
   }
 
   private boolean loadConn(Configuration config) {
@@ -163,7 +164,7 @@ public class WizardWindow extends Wizard
     try {
       List<String> warnings = new ArrayList();
       ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
-
+      System.out.println("===================================初始化页面");
       Map codeLayoutSwitch = this.pageTwo.getCodeLayoutMap();
 
       String codeVersion = this.pageTwo.getCodeVersion();
