@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Plugin
+Bundle-SymbolicName: ht.plugin; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ht.plugin.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui.console;bundle-version="3.5.100",
+ org.eclipse.jdt.core;bundle-version="3.7.3",
+ org.eclipse.jface.text;bundle-version="3.7.2"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Vendor: yangbin
+Import-Package: org.eclipse.jdt.internal.corext

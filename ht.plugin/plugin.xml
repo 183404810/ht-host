@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+      		adaptable="true"
+            objectClass="org.eclipse.core.resources.IFile"
+            id="ht.plugin.contribution">
+         <action
+               label="Generator Code"
+               icon="icons/mybatis.ico"
+               class="ht.plugin.actions.CodeAction"
+               menubarPath="additions"
+               enablesFor="1"
+               id="ht.plugin.action">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>
