@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Properties;
 
 public abstract class AbstractParser implements Parser{
-	private Properties properties;
+	protected Properties properties;
 	private List<String> warnings;
 	private List<String> parseErrors;
 	

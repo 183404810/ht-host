@@ -6,6 +6,7 @@ import ht.plugin.configration.config.JavaFileConfig;
 import ht.plugin.configration.config.XmlFileConfig;
 
 import java.util.List;
+import java.util.Properties;
 
 public class Configration {
 	private JavaFileConfig javaConfig;
@@ -13,6 +14,8 @@ public class Configration {
 	private JSFileConfig jsConfig;
 	private XmlFileConfig xfconfig;
 	private List<String> classEntry;
+	private Properties properties;
+	
 	
 	public JavaFileConfig getJavaConfig() {
 		return javaConfig;
@@ -43,5 +46,11 @@ public class Configration {
 	}
 	public void setClassEntry(List<String> classEntry) {
 		this.classEntry = classEntry;
+	}
+	public Properties getProperties() {
+		return properties;
+	}
+	public void setProperties(Properties properties) {
+		this.properties = properties;
 	}
 }

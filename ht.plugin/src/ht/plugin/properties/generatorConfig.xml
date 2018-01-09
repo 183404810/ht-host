@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
+	<properties url="file:///D:/mybatis-gen/mybatis-ibator-conf.properties"/>
 	<classPathEntry location="${mysql.jar.path}" />
 	<context id="context1" targetRuntime="MyBatis3">
 		
