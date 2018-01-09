@@ -1,42 +1,38 @@
 package ht.plugin.configration;
 
-import java.io.IOException;
-import java.io.InputStream;
+import ht.plugin.exception.XMLParserException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-public class ConfigrationParser extends AbstractParser{
-
-	@Override
-	public Configration parser(InputStream is) {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(true);
+public class ConfigrationParser{
+	private List<String> warnings;
+	private List<String> parseErrors;
+	
+	public ConfigrationParser(List<String> warnings,List<String> parseErrors){
+		if(warnings!=null)
+			this.warnings=warnings;
+		else
+			this.warnings=new ArrayList<>();
+			
+		if(parseErrors!=null)
+			this.parseErrors=parseErrors;
+		else
+			this.parseErrors=new ArrayList<>();
+	}
+	
+	
+	public void parser(AbstractParser parser,String path,Configration config) throws XMLParserException {
 		try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			builder.setEntityResolver(new ParserResolver());
-			builder.setErrorHandler(new ParserErrorHanlder());
-			Document document = null;
-		     
-			try {
-				document = builder.parse(is);
-			} catch (SAXException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			parser.setParseErrors(this.parseErrors);
+			parser.setWarnings(this.warnings);
+			parser.parser(new File(path), config);
+			if (this.parseErrors.size() > 0) {
+				throw new XMLParserException(this.parseErrors);
 			}
-			
-			
-		} catch (ParserConfigurationException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		return null;
-	}
-
+ 	}
 }

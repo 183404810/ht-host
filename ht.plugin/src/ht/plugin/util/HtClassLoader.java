@@ -1,7 +1,5 @@
 package ht.plugin.util;
 
-import ht.plugin.exception.ClassLoaderException;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;

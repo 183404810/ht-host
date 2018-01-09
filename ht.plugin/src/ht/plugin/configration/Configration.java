@@ -5,12 +5,15 @@ import ht.plugin.configration.config.JSFileConfig;
 import ht.plugin.configration.config.JavaFileConfig;
 import ht.plugin.configration.config.XmlFileConfig;
 
+import java.util.List;
+
 public class Configration {
 	private JavaFileConfig javaConfig;
 	private JDBCConfig dbConfig;
 	private JSFileConfig jsConfig;
 	private XmlFileConfig xfconfig;
-	 
+	private List<String> classEntry;
+	
 	public JavaFileConfig getJavaConfig() {
 		return javaConfig;
 	}
@@ -34,5 +37,11 @@ public class Configration {
 	}
 	public void setXfconfig(XmlFileConfig xfconfig) {
 		this.xfconfig = xfconfig;
+	}
+	public List<String> getClassEntry() {
+		return classEntry;
+	}
+	public void setClassEntry(List<String> classEntry) {
+		this.classEntry = classEntry;
 	}
 }
