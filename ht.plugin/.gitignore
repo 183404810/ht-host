@@ -23,8 +23,8 @@ nb-configuration.xml
 # Eclipse noise
 .settings
 .settings/*
-.bin
-.bin/*
+bin
+bin/*
 .project
 .classpath
 #.gitignore
