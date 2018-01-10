@@ -1,13 +1,19 @@
 package ht.plugin.configration;
 
+import ht.plugin.configration.config.JDBCConfig;
+import ht.plugin.configration.config.JavaFileConfig;
+import ht.plugin.context.PluginContext;
 import ht.plugin.exception.XMLParserException;
 import ht.plugin.properties.Constant;
+import ht.plugin.properties.LayoutEnum;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -52,8 +58,9 @@ public class XMLConfigrationParser extends AbstractParser{
 			if(!Constant.docTypePublicId.equals(docType.getPublicId())){
 				throw new XMLParserException("暂时只能支持myBatis文档！");
 			}
-			
 			parserXml(rootNode,config);
+			config.getContext().putAll(this.getProperties());
+			config.getContext().putAll(System.getProperties());
 		} catch (ParserConfigurationException e) {
 			this.parseErrors.add(e.getMessage());
 		}
@@ -81,30 +88,65 @@ public class XMLConfigrationParser extends AbstractParser{
 				String classUrl=properties.getProperty("location");
 				config.getClassEntry().add(classUrl);
 			}else if("context".equals(node.getNodeName())){
-				parserContext(node,config);
+				parserContext(node,config,properties);
 			}
 		}
 	}
 	
-	private void parserContext(Node node,Configration config){
+	private void parserContext(Node node,Configration config,Properties properties){
 		NodeList nlist=node.getChildNodes();
+		PluginContext context=config.getContext();
+		Map<String,JavaFileConfig> jConfig=new HashMap<>();
+		
 		for(int i=0;i<nlist.getLength();i++){
 			Node cnode=nlist.item(i);
 			if(cnode.getNodeType()!=Node.ELEMENT_NODE) continue;
 			switch(cnode.getNodeName()){
 				case "property":
+					String key=properties.getProperty("name");
+					String value=properties.getProperty("value");
+					context.setProperty(key,value);
+					break;
+				case "jdbcConnection":
+					String url=properties.getProperty("connectionURL");
+					String driverClass=properties.getProperty("driverClass");
+					String userId=properties.getProperty("userId");
+					String password=properties.getProperty("password");
+					JDBCConfig dbConfig=new JDBCConfig(url,driverClass,userId,password);
+					config.setDbConfig(dbConfig);
+					break;
+				case "tableSetting":
 					
-			
-			
-			
+					break;
+				case "javaModelGenerator":
+				case "sqlMapGenerator":
+				case "javaServiceGenerator":
+					if(!config.getLayout().contains(LayoutEnum.SERVICE_LAYOUT)) break;
+				case "javaDaoGenerator":
+					if(!config.getLayout().contains(LayoutEnum.DAY_LAYOUT)) break;
+				case "javaControllerGenerator":
+					if(!config.getLayout().contains(LayoutEnum.CONTROLLER_LAYOUT)) break;
+					
+					JavaFileConfig fconfig=new JavaFileConfig();
+					fconfig.setTargetPackage(properties.getProperty("targetPackage"));
+					fconfig.setEnableInterfaceSupInterfaceGenericity(Boolean.getBoolean(properties.getProperty("enableInterfaceSupInterfaceGenericity")));
+					fconfig.setEnableSupClassGenericity(Boolean.parseBoolean(properties.getProperty("enableSupClassGenericity")));
+					fconfig.setExtendSupClass(properties.getProperty("extendSupClass"));
+					fconfig.setImplementationPackage(properties.getProperty("implementationPackage"));
+					fconfig.setInterfaceExtendSupInterface(properties.getProperty("interfaceExtendSupInterface"));
+					fconfig.setTargetProject(properties.getProperty("targetProject"));
+					jConfig.put(cnode.getNodeName(), fconfig);
+					NodeList childs=cnode.getChildNodes();
+					for(int j=0;j<childs.getLength();j++){
+						Node n=childs.item(i);
+						if(n.getNodeType()==1){
+							Properties ps=parserAttribute(n);
+							fconfig.setProperty(ps.getProperty("name"), ps.getProperty("value"));
+						}
+					}
+					break;
 			}
-			
-			
 		}
-		
-		
-		
-		
 	}
 	
 	private Properties parserAttribute(Node node){

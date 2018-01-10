@@ -36,7 +36,6 @@
 			<property name="enableInterfaceSupInterfaceGenericity" value="false"/>
 			<property name="exclusionsMethods" value="countByQuery,deleteByQuery,deleteByPrimaryKey,insert,insertSelective,selectByQuery,selectByQueryWithBLOBs,selectByPrimaryKey,selectCount,selectByPage,updateByQuery,updateByQueryWithBLOBs,updateByPrimaryKeySelective,updateByPrimaryKeyWithBLOBs"/> 
 		</javaClientGenerator>
-			
 	    
 		<javaServiceGenerator targetPackage="com.belle.scm.mesV1.service" implementationPackage="com.belle.scm.mesV1.service.impl" targetProject="blsf-mesV1-service" 
 		interfaceExtendSupInterface="com.belle.scm.common.base.service.BaseCrudService" enableInterfaceSupInterfaceGenericity="false"
