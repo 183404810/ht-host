@@ -86,7 +86,13 @@ public class CodeAction implements IObjectActionDelegate {
 		MessageDialog.openInformation(shell,"Plugin","New Action was executed.");
 	}
 
-	
+	private void createWizard(PluginContext context){
+		JDBCConfig dbconfig=context.getConfig().getDbConfig();
+		if(dbconfig==null) return;
+		WizardWindow w=new WizardWindow(this.selectedFile,conig)                          
+		
+		
+	}
 	
 	private IPath findDriver(String driverName){
 		IWorkspace workspace=ResourcesPlugin.getWorkspace();
