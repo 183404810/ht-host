@@ -56,44 +56,33 @@ public class BorderLayout extends Layout{
 			Object layoutData=children[i].getLayoutData();
 			if(layoutData!=null && layoutData instanceof BorderData){
 				BorderData borderData=(BorderData) layoutData;
-				
+				if(borderData.region>=0 && borderData.region<=4){
+					this.controls[borderData.region]=children[i];
+				}
 			}
 		}
+		this.width=0;
+		this.height=0;
+		if(this.sizes==null)
+			this.sizes=new Point[5];
+		for(int i=0;i<this.controls.length;i++){
+			Control control=this.controls[i];
+			if(control==null)
+				this.sizes[i]=new Point(0,0);
+			else
+				this.sizes[i]=control.computeSize(-1, -1,true);
+		}
+		this.width=Math.max(this.width,this.sizes[0].x);
+		this.width=Math.max(this.width,this.sizes[4].x+this.sizes[2].x+this.sizes[3].x);
+		this.width=Math.max(this.width,this.sizes[1].x);
+		this.height=(Math.max(Math.max(this.sizes[4].y, this.sizes[3].y),this.sizes[2].y+this.sizes[2].y)+this.sizes[0].y+this.sizes[1].y);
 	}
-	
-	  private void refreshSizes(Control[] children)
-	  {
-	    for (int i = 0; i < children.length; i++) {
-	      Object layoutData = children[i].getLayoutData();
-	      if ((layoutData != null) && ((layoutData instanceof BorderData)))
-	      {
-	        BorderData borderData = (BorderData)layoutData;
-	        if ((borderData.region >= 0) && (borderData.region <= 4))
-	        {
-	          this.controls[borderData.region] = children[i];
-	        }
-	      }
-	    }
-	    this.width = 0;
-	    this.height = 0;
-	    if (this.sizes == null)
-	      this.sizes = new Point[5];
-	    for (int i = 0; i < this.controls.length; i++) {
-	      Control control = this.controls[i];
-	      if (control == null)
-	        this.sizes[i] = new Point(0, 0);
-	      else {
-	        this.sizes[i] = control.computeSize(-1, -1, true);
-	      }
-	    }
-	    this.width = Math.max(this.width, this.sizes[0].x);
-	    this.width = 
-	      Math.max(this.width, this.sizes[4].x + this.sizes[2].x + this.sizes[3].x);
-	    this.width = Math.max(this.width, this.sizes[1].x);
-	    this.height = 
-	      (Math.max(Math.max(this.sizes[4].y, this.sizes[3].y), 
-	      this.sizes[2].y) + this.sizes[0].y + this.sizes[1].y);
-	  }
 
-	  
+	public static class BorderData {
+		public int region=2;
+		public BorderData(){}
+		public BorderData(int region){
+			this.region=region;
+		}
+	}
 }
