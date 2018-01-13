@@ -1,9 +1,15 @@
 package ht.plugin.wizard;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -11,6 +17,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 public class WizardPageOne extends WizardPage{
@@ -58,7 +66,72 @@ public class WizardPageOne extends WizardPage{
 	    fd_combo.top = new FormAttachment(lblNewLabel, -5, 128);
 	    fd_combo.left = new FormAttachment(lblNewLabel, 10, 131072);
 	    this.combo.setLayoutData(fd_combo);
-	    ·
+	    if (this.tableMap != null && this.tableMap.size() > 0) {
+	        this.combo.setItems((String[])this.tableMap.keySet().toArray(new String[this.tableMap.keySet().size()]));
+	    }
+	    this.combo.addSelectionListener(new SelectionAdapter(){
+	        public void widgetSelected(SelectionEvent e) {
+	        	WizardPageOne.this.table.removeAll();
+	        	String key = WizardPageOne.this.combo.getText();
+	        	for (String k : WizardPageOne.this.tableMap.get(key)) {
+	        		TableItem item = new TableItem(WizardPageOne.this.table, 0);
+	        		item.setText(k);
+	        	}
+	        }
+	    });
+	    
+	    this.text = new Text(composite, 2048);
+	    this.text.addModifyListener(new ModifyListener() {
+	    	public void modifyText(ModifyEvent arg0) {
+	    		WizardPageOne.this.table.removeAll();
+	    		String key = WizardPageOne.this.combo.getText();
+	    		if (key.equals("")) {
+	    			MessageDialog.openConfirm(WizardPageOne.this.getShell(), "提交", "请选择对应的表空间");
+	    			return;
+	    		}
+	    		List<String> newTableList = new ArrayList<>();
+	    		for (String k : WizardPageOne.this.tableMap.get(key)) {
+	    			if (k.toLowerCase().indexOf(WizardPageOne.this.text.getText().toLowerCase()) != -1) {
+	    				newTableList.add(k);
+	    			}
+	    		}
+
+	    		for (String k : newTableList) {
+	    			TableItem item = new TableItem(WizardPageOne.this.table, 0);
+	    			item.setText(k);
+	    		}
+	    	}
+	    });
+	    FormData fd_text = new FormData();
+	    fd_text.top = new FormAttachment(this.combo, 2, 128);
+	    fd_text.left = new FormAttachment(this.combo, 10, 131072);
+	    this.text.setLayoutData(fd_text);
+
+	    this.table = new Table(container, 65570);
+	    this.tableList = new ArrayList<>();
+	    this.table.addSelectionListener(new SelectionAdapter(){
+	    	public void widgetSelected(SelectionEvent e) {
+	    		WizardPageOne.this.tableList.clear();
+
+	    		for (int i = 0; i < WizardPageOne.this.table.getItems().length; i++) {
+	    			if (WizardPageOne.this.table.getItems()[i].getChecked()) {
+	    				WizardPageOne.this.tableList.add(WizardPageOne.this.combo.getText() + "." + WizardPageOne.this.table.getItems()[i].getText());
+	    			}
+	    		}
+
+	    		if (WizardPageOne.this.tableList.size() > 0)
+	    			WizardPageOne.this.setComplete(true);
+	    		else
+	    			WizardPageOne.this.setComplete(false);
+	    	}
+	    });
+	    this.table.setLayoutData(new BorderLayout.BorderData(2));
+	    this.table.setHeaderVisible(true);
+	    this.table.setLinesVisible(true);
+
+	    TableColumn col1 = new TableColumn(this.table, 0);
+	    col1.setText("表名");
+	    col1.setWidth(300);
 	}
 	private void setComplete(boolean flag){
 		setPageComplete(flag);	
