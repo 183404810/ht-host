@@ -123,7 +123,7 @@ public class XMLConfigrationParser extends AbstractParser{
 				case "javaServiceGenerator":
 					if(!config.getLayout().contains(LayoutEnum.SERVICE_LAYOUT)) break;
 				case "javaDaoGenerator":
-					if(!config.getLayout().contains(LayoutEnum.DAY_LAYOUT)) break;
+					if(!config.getLayout().contains(LayoutEnum.DAO_LAYOUT)) break;
 				case "javaControllerGenerator":
 					if(!config.getLayout().contains(LayoutEnum.CONTROLLER_LAYOUT)) break;
 					

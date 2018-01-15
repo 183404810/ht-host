@@ -74,53 +74,49 @@ public class WizardPageTwo extends WizardPage{
 	    			check_controller.setSelection(false);
 	    		}
 
-	        WizardPageTwo.this.codeLayoutMap.clear();
-	        WizardPageTwo.this.codeLayoutMap.put(CodeLayoutEnum.SERVICE_LAYOUT, Boolean.valueOf(true));
-	      }
+	    		WizardPageTwo.this.codeLayoutMap.clear();
+	    		WizardPageTwo.this.codeLayoutMap.put(LayoutEnum.SERVICE_LAYOUT, Boolean.valueOf(true));
+	    	}
 	    });
-	    check_dao.addSelectionListener(new SelectionAdapter()
-	    {
-	      public void widgetSelected(SelectionEvent e) {
-	        boolean flag = ((Button)e.getSource()).getSelection();
-	        if (flag) {
-	          check_service.setSelection(flag);
-	        }
-	        if ((!flag) && (check_controller.getSelection())) {
-	          check_controller.setSelection(false);
-	        }
-	        WizardPageTwo.this.codeLayoutMap.clear();
-	        WizardPageTwo.this.codeLayoutMap.put(CodeLayoutEnum.SERVICE_LAYOUT, Boolean.valueOf(true));
-	        WizardPageTwo.this.codeLayoutMap.put(CodeLayoutEnum.DAO_LAYOUT, Boolean.valueOf(true));
-	      }
+	    check_dao.addSelectionListener(new SelectionAdapter(){
+	    	public void widgetSelected(SelectionEvent e) {
+	    		boolean flag = ((Button)e.getSource()).getSelection();
+	    		if (flag) {
+	    			check_service.setSelection(flag);
+	    		}
+	    		if ((!flag) && (check_controller.getSelection())) {
+    				check_controller.setSelection(false);
+	    		}
+	    		WizardPageTwo.this.codeLayoutMap.clear();
+	    		WizardPageTwo.this.codeLayoutMap.put(LayoutEnum.SERVICE_LAYOUT, Boolean.valueOf(true));
+	    		WizardPageTwo.this.codeLayoutMap.put(LayoutEnum.DAO_LAYOUT, Boolean.valueOf(true));
+	    	}
 	    });
-	    check_controller.addSelectionListener(new SelectionAdapter()
-	    {
-	      public void widgetSelected(SelectionEvent e) {
-	        boolean flag = ((Button)e.getSource()).getSelection();
-	        if (flag) {
-	          check_service.setSelection(flag);
-	          check_dao.setSelection(flag);
-	        }
-	        WizardPageTwo.this.codeLayoutMap.clear();
-	        WizardPageTwo.this.codeLayoutMap.put(CodeLayoutEnum.SERVICE_LAYOUT, Boolean.valueOf(true));
-	        WizardPageTwo.this.codeLayoutMap.put(CodeLayoutEnum.DAO_LAYOUT, Boolean.valueOf(true));
-	        WizardPageTwo.this.codeLayoutMap.put(CodeLayoutEnum.CONTROLLER_LAYOUT, Boolean.valueOf(true));
-	      }
+	    check_controller.addSelectionListener(new SelectionAdapter(){
+	    	public void widgetSelected(SelectionEvent e) {
+	    		boolean flag = ((Button)e.getSource()).getSelection();
+	    			if (flag) {
+	    				check_service.setSelection(flag);
+	    				check_dao.setSelection(flag);
+	    			}
+	    			WizardPageTwo.this.codeLayoutMap.clear();
+	    			WizardPageTwo.this.codeLayoutMap.put(LayoutEnum.SERVICE_LAYOUT, Boolean.valueOf(true));
+			        WizardPageTwo.this.codeLayoutMap.put(LayoutEnum.DAO_LAYOUT, Boolean.valueOf(true));
+			        WizardPageTwo.this.codeLayoutMap.put(LayoutEnum.CONTROLLER_LAYOUT, Boolean.valueOf(true));
+	    	}
 	    });
-	    check_jsmvc.addSelectionListener(new SelectionAdapter()
-	    {
-	      public void widgetSelected(SelectionEvent e)
-	      {
-	        WizardPageTwo.this.codeLayoutMap.put(CodeLayoutEnum.JSMVC_LAYOUT, Boolean.valueOf(true));
-	      }
+	    check_jsmvc.addSelectionListener(new SelectionAdapter(){
+	    	public void widgetSelected(SelectionEvent e){
+	    		WizardPageTwo.this.codeLayoutMap.put(LayoutEnum.JSMVC_LAYOUT, Boolean.valueOf(true));
+	    	}
 	    });
-	  }
+	}
 
-	  public Map<CodeLayoutEnum, Boolean> getCodeLayoutMap() {
-	    return this.codeLayoutMap;
-	  }
+	public Map<LayoutEnum, Boolean> getCodeLayoutMap() {
+		return this.codeLayoutMap;
+	}
 
-	  public String getCodeVersion() {
-	    return this.txt_version.getText();
-	  }
+	public String getCodeVersion() {
+		return this.txt_version.getText();
+	}
 }

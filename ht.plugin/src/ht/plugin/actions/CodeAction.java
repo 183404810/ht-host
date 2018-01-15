@@ -8,6 +8,7 @@ import ht.plugin.context.PluginContext;
 import ht.plugin.exception.XMLParserException;
 import ht.plugin.util.FindJar;
 import ht.plugin.util.Tools;
+import ht.plugin.wizard.WizardWindow;
 
 import java.io.File;
 import java.util.HashMap;
@@ -89,7 +90,7 @@ public class CodeAction implements IObjectActionDelegate {
 	private void createWizard(PluginContext context){
 		JDBCConfig dbconfig=context.getConfig().getDbConfig();
 		if(dbconfig==null) return;
-		WizardWindow w=new WizardWindow(this.selectedFile,conig)                          
+		WizardWindow w=new WizardWindow(this.selectedFile,context)                          
 		
 		
 	}
