@@ -3,6 +3,11 @@ package ht.plugin.configration.config;
 import ht.plugin.adapter.PropertiesAdapter;
 import ht.plugin.properties.JDBCType;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.SQLException;
+import java.util.Properties;
+
 public class JDBCConfig extends PropertiesAdapter{
 	private String url;
 	private String driverClass;
@@ -15,6 +20,13 @@ public class JDBCConfig extends PropertiesAdapter{
 		this.driverClass=driverClass;
 		this.userId=userId;
 		this.password=password;
+	}
+	
+	public Connection getConn(Driver driver) throws SQLException{
+		Properties info=new Properties();
+		info.setProperty("user", userId);
+		info.setProperty("password", password);
+		return driver.connect(url, info);
 	}
 	
 	public String getUrl() {

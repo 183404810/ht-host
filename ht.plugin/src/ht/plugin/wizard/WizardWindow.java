@@ -1,12 +1,16 @@
 package ht.plugin.wizard;
 
 
+import ht.plugin.actions.Activator;
 import ht.plugin.configration.Configration;
 import ht.plugin.context.PluginContext;
+import ht.plugin.properties.LayoutEnum;
+import ht.plugin.util.HtClassLoader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Driver;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -78,173 +82,117 @@ public class WizardWindow extends Wizard{
 	}
 
 	private boolean loadConn(PluginContext context) {
+		Connection conn=null;
 		try {
 			Configration config=context.getConfig();
-			context.getLoader().loadClass(config.getClassEntry().get(0));
-			
-			List contexts = config.getContexts();
-			if (config.getClassPathEntries().size() > 0) {
-				ClassLoader classLoader = ClassloaderUtility.getCustomClassloader(config.getClassPathEntries());
-				ObjectFactory.addExternalClassLoader(classLoader);
-			} else {
-				this.message = "The xml file is invalid.";
-				Tools.writeLine(this.message);
-				return false;
-			}
-			if ((contexts != null) && (contexts.size() > 0) && (contexts.get(0) != null)) {
-				JDBCConnectionConfiguration jdbcConfig = ((Context)contexts.get(0)).getJdbcConnectionConfiguration();
-				Connection con = null;
-				try {
-					con = ConnectionFactory.getInstance().getConnection(jdbcConfig);
-					DatabaseMetaData meta = con.getMetaData();
-					ResultSet rs = meta.getTables(null, null, null, new String[] { "TABLE" });
-					this.tableMap = new HashMap();
-					while (rs.next()) {
-						if ((rs.getString(1) != null) && 
-								(this.tableMap.get(rs.getString(1)) == null)) {
-							List tableList = new ArrayList();
-							tableList.add(rs.getString(3));
-							this.tableMap.put(rs.getString(1), tableList);
-						} else if (rs.getString(1) != null) {
-							((List)this.tableMap.get(rs.getString(1))).add(rs.getString(3));
-						}
-						if ((rs.getString(2) != null) && (this.tableMap.get(rs.getString(2)) == null)) {
-							List tableList = new ArrayList();
-							tableList.add(rs.getString(3));
-							this.tableMap.put(rs.getString(2), tableList);
-						} else if (rs.getString(2) != null) {
-							((List)this.tableMap.get(rs.getString(2))).add(rs.getString(3));
-						}
+			Driver driver=(Driver)HtClassLoader.loadClass(config).newInstance();
+			conn=config.getDbConfig().getConn(driver);
+			DatabaseMetaData meta=conn.getMetaData();
+			ResultSet rs=meta.getTables(null, null, null, new String[]{"TABLE"});
+			tableMap=new HashMap<>();
+			while(rs.next()){
+				if(rs.getString(1)!=null){
+					if(!this.tableMap.containsKey(rs.getString(1))){
+						List<String> tableList = new ArrayList<>();
+						tableList.add(rs.getString(3));
+						tableMap.put(rs.getString(1), tableList);
+					}else{
+						tableMap.get(rs.getString(1)).add(rs.getString(3));
 					}
+				}
+				if(rs.getString(2)!=null){
+					if(!this.tableMap.containsKey(rs.getString(2))){
+						List<String> tableList = new ArrayList<>();
+						tableList.add(rs.getString(3));
+						tableMap.put(rs.getString(2), tableList);
+					}else{
+						tableMap.get(rs.getString(2)).add(rs.getString(3));
+					}
+				}
+			}
+			conn.close();
+			return true;
+		}catch(Exception e){
+			try {
+				if(conn!=null && !conn.isClosed())
+					conn.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return false;
+	}
 
-	          con.close();
-	          return true;
-	        } catch (Exception e) {
-	          try {
-	            if (con != null)
-	              con.close();
-	          } catch (SQLException e1) {
-	            this.message = e1.getLocalizedMessage();
-	            Tools.writeLine(this.message);
-	          }
-	          this.message = e.getLocalizedMessage();
-	          Tools.writeLine(this.message);
-	          return false;
-	        }
-	      }
-	      this.message = "The xml file is incorrect.";
-	      Tools.writeLine(this.message);
-	      return false;
-	    }
-	    catch (Exception e) {
-	      this.message = ("init connection error:" + e.getMessage());
-	      Tools.writeLine(this.message);
-	    }return false;
-	  }
-
-	  public boolean performFinish()
-	  {
-	    Shell shell = getShell();
-	    try {
-	      List<String> warnings = new ArrayList();
-	      ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
-	      System.out.println("===================================初始化页面");
-	      Map codeLayoutSwitch = this.pageTwo.getCodeLayoutMap();
-
-	      String codeVersion = this.pageTwo.getCodeVersion();
-	      if (codeLayoutSwitch.size() == 0) {
-	        codeLayoutSwitch.put(CodeLayoutEnum.SERVICE_LAYOUT, Boolean.valueOf(false));
-	        codeLayoutSwitch.put(CodeLayoutEnum.MANAGER_LAYOUT, Boolean.valueOf(false));
-	        codeLayoutSwitch.put(CodeLayoutEnum.DAO_LAYOUT, Boolean.valueOf(false));
-	        codeLayoutSwitch.put(CodeLayoutEnum.CONTROLLER_LAYOUT, Boolean.valueOf(false));
-	        codeLayoutSwitch.put(CodeLayoutEnum.JSMVC_LAYOUT, Boolean.valueOf(false));
-	      }
-
-	      IRunnableWithProgress thread = new GeneratorRunner(warnings, 
-	        this.pageOne.getTableList(), codeLayoutSwitch, codeVersion);
-	      
-	      dialog.run(true, false, thread);
-
-	      if (warnings.size() > 0) {
-	        MultiStatus ms = new MultiStatus("org.mybatis.generator.eclipse.ui", 
-	          2, "Generation Warnings Occured", null);
-
-	        Iterator iter = warnings.iterator();
-	        while (iter.hasNext()) {
-	          Status status = new Status(2, 
-	            "org.mybatis.generator.eclipse.ui", 2, (String)iter.next(), 
-	            null);
-	          ms.add(status);
-	        }
-
-	        ErrorDialog.openError(shell, "MyBatis Generator", 
-	          "Run Complete With Warnings", ms, 2);
-	      }
-	    } catch (Exception e) {
-	      handleException(e, shell);
-	    }
-
-	    return true;
-	  }
-
-	  private void handleException(Exception exception, Shell shell)
-	  {
-	    Throwable exceptionToHandle;
-	    if ((exception instanceof InvocationTargetException))
-	      exceptionToHandle = ((InvocationTargetException)exception)
-	        .getCause();
-	    else
-	      exceptionToHandle = exception;
-	    IStatus status;
-	    if ((exceptionToHandle instanceof InterruptedException)) {
-	      status = new Status(8, "org.mybatis.generator.eclipse.ui", 
-	        8, "Cancelled by User", exceptionToHandle);
-	    }
-	    else
-	    {
-	      if ((exceptionToHandle instanceof CoreException)) {
-	        status = ((CoreException)exceptionToHandle).getStatus();
-	      } else {
-	        String message = "Unexpected error while running MyBatis Generator.";
-
-	        status = new Status(4, "org.mybatis.generator.eclipse.ui", 
-	          4, message, exceptionToHandle);
-
-	        Activator.getDefault().getLog().log(status);
-	      }
-	    }
-	    ErrorDialog.openError(shell, "MyBatis Generator", "Generation Failed", 
-	      status, 12);
-	  }
-
-	  private class GeneratorRunner
-	    implements IRunnableWithProgress
-	  {
-	    private List<String> warnings;
-	    private List<String> tableList;
-	    private Map<CodeLayoutEnum, Boolean> codeLayout;
-	    private String codeVersion;
-
-	    public GeneratorRunner(List<String> warnings,List<String> tableList, Map<CodeLayoutEnum, Boolean> codeLayout, String codeVersion)
-	    {
-	      this.warnings = warnings;
-	      this.tableList = tableList;
-	      this.codeLayout = codeLayout;
-	      this.codeVersion = codeVersion;
-	    }
-
-	    public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
-	    {
-	      try {
-	        RunGeneratorThread thread = new RunGeneratorThread(
-	          WizardWindow.this.selectedFile, this.warnings, this.tableList, this.codeLayout, 
-	          this.codeVersion);
-
-	        ResourcesPlugin.getWorkspace().run(thread, monitor);
-	      } catch (CoreException e) {
-	        throw new InvocationTargetException(e);
-	      }
-	    }
-	  }
-
+	public boolean performFinish(){
+		Shell shell=getShell();
+		try{
+			List<String> warnings=new ArrayList<>();
+			ProgressMonitorDialog dialog=new ProgressMonitorDialog(shell);
+			Map<LayoutEnum,Boolean> map=this.pageTwo.getCodeLayoutMap();
+			String codeVersion = this.pageTwo.getCodeVersion();
+			if(map.size()==0){
+				map.put(LayoutEnum.SERVICE_LAYOUT, false);
+				map.put(LayoutEnum.DAO_LAYOUT, false);
+				map.put(LayoutEnum.CONTROLLER_LAYOUT, false);
+				map.put(LayoutEnum.JSMVC_LAYOUT,false);
+			}
+			
+			IRunnableWithProgress thread = new GeneratorRunner(warnings,this.pageOne.getTableList(), map, codeVersion);
+			dialog.run(true, false, thread);
+			if(warnings.size() > 0){
+				MultiStatus ms = new MultiStatus("org.mybatis.generator.eclipse.ui",2, "Generation Warnings Occured", null);
+				Iterator<String> iter = warnings.iterator();
+				while (iter.hasNext()) {
+					Status status = new Status(2,"org.mybatis.generator.eclipse.ui", 2, iter.next(),null);
+					ms.add(status);
+				}
+				ErrorDialog.openError(shell, "MyBatis Generator","Run Complete With Warnings", ms, 2);
+			}
+		}catch(Exception e){
+			handleException(e, shell);
+		}
+		return true;
+	}
+	
+	private void handleException(Exception e,Shell shell){
+		Throwable exception;
+		if(e instanceof InvocationTargetException)
+			exception=((InvocationTargetException) e).getCause();
+		else
+			exception=e;
+		IStatus status;
+		if(exception instanceof InterruptedException){
+			status=new Status(8,"org.mybatis.generator.eclipse.ui", 8, "Cancelled by User", exception);
+		}else{
+			if(exception instanceof CoreException){
+				status = ((CoreException)exception).getStatus();
+			}else{
+				String message = "Unexpected error while running MyBatis Generator.";
+				status = new Status(4, "org.mybatis.generator.eclipse.ui",4, message, exception);
+				Activator.getDefault().getLog().log(status);
+			}
+		}
+	}
+	 
+	private class GeneratorRunner implements IRunnableWithProgress{
+		private List<String> warnings;
+		private List<String> tableList;
+		private Map<LayoutEnum,Boolean> codeLayout;
+		private String codeVersion;
+		public GeneratorRunner(List<String> warnings,List<String> tableList,Map<LayoutEnum,Boolean> codeLayout,String codeVersion){
+			this.warnings=warnings;
+			this.tableList=tableList;
+			this.codeLayout=codeLayout;
+			this.codeVersion=codeVersion;
+		}
+		public void run(IProgressMonitor monitor) throws InvocationTargetException,InterruptedException{
+			try{
+				GeneratorThread thread=new GeneratorThread(WizardWindow.this.selectedFile,
+						this.warnings,this.tableList,this.codeLayout,this.codeVersion);
+				ResourcesPlugin.getWorkspace().run(thread, monitor);
+			}catch(CoreException e){
+				throw new InvocationTargetException(e);
+			}
+		}
+	}
 }

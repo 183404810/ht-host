@@ -76,7 +76,7 @@ public class CodeAction implements IObjectActionDelegate {
 					MessageDialog.openError(this.shell, "提醒", "未找到驱动包");
 				}
 				cache.put(driverClassName, path);
-				
+				config.getClassEntry().add(driverClassName);
 				createWizard(context);
 			}
 		} catch (XMLParserException e) {
@@ -90,7 +90,7 @@ public class CodeAction implements IObjectActionDelegate {
 	private void createWizard(PluginContext context){
 		JDBCConfig dbconfig=context.getConfig().getDbConfig();
 		if(dbconfig==null) return;
-		WizardWindow w=new WizardWindow(this.selectedFile,context)                          
+		WizardWindow w=new WizardWindow(this.selectedFile,context);                          
 		
 		
 	}
