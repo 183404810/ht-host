@@ -41,6 +41,7 @@ public class WizardWindow extends Wizard{
 	private IFile selectedFile;
 	private boolean validate;
 	private String message;
+	private PluginContext context;
 	
 	public WizardWindow(IFile selectedFile, PluginContext context){
 		setWindowTitle("向导");
@@ -48,7 +49,9 @@ public class WizardWindow extends Wizard{
 	    setTitleBarColor(new RGB(255, 0, 0));
 	    setWindowTitle("选择表信息");
 	    this.selectedFile = selectedFile;
+	    this.context=context;
 	    this.validate = loadConn(context);
+	    
 	}
 
 	public boolean isValidate() {
@@ -137,7 +140,7 @@ public class WizardWindow extends Wizard{
 				map.put(LayoutEnum.JSMVC_LAYOUT,false);
 			}
 			
-			IRunnableWithProgress thread = new GeneratorRunner(warnings,this.pageOne.getTableList(), map, codeVersion);
+			IRunnableWithProgress thread = new GeneratorRunner(warnings,this.pageOne.getTableList(), map, codeVersion,context);
 			dialog.run(true, false, thread);
 			if(warnings.size() > 0){
 				MultiStatus ms = new MultiStatus("org.mybatis.generator.eclipse.ui",2, "Generation Warnings Occured", null);
@@ -179,16 +182,19 @@ public class WizardWindow extends Wizard{
 		private List<String> tableList;
 		private Map<LayoutEnum,Boolean> codeLayout;
 		private String codeVersion;
-		public GeneratorRunner(List<String> warnings,List<String> tableList,Map<LayoutEnum,Boolean> codeLayout,String codeVersion){
+		private PluginContext context;
+		 
+		public GeneratorRunner(List<String> warnings,List<String> tableList,Map<LayoutEnum,Boolean> codeLayout,String codeVersion,PluginContext context){
 			this.warnings=warnings;
 			this.tableList=tableList;
 			this.codeLayout=codeLayout;
 			this.codeVersion=codeVersion;
+			this.context=context;
 		}
 		public void run(IProgressMonitor monitor) throws InvocationTargetException,InterruptedException{
 			try{
 				GeneratorThread thread=new GeneratorThread(WizardWindow.this.selectedFile,
-						this.warnings,this.tableList,this.codeLayout,this.codeVersion);
+						this.warnings,this.tableList,this.codeLayout,this.codeVersion,this.context);
 				ResourcesPlugin.getWorkspace().run(thread, monitor);
 			}catch(CoreException e){
 				throw new InvocationTargetException(e);

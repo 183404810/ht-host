@@ -3,7 +3,6 @@ package ht.plugin.context;
 import ht.plugin.adapter.PropertiesAdapter;
 import ht.plugin.configration.Configration;
 import ht.plugin.configration.ConfigrationParser;
-import ht.plugin.configration.Parser;
 import ht.plugin.introspect.ITable;
 import ht.plugin.util.HtClassLoader;
 
@@ -18,6 +17,7 @@ public class PluginContext extends PropertiesAdapter{
 	private Configration config;
 	private ConfigrationParser parser;
 	private ClassLoader loader;
+	private Generator generator;
 	
 	public void generat(){
 		
@@ -30,6 +30,8 @@ public class PluginContext extends PropertiesAdapter{
 			loader=new HtClassLoader("",System.class.getClassLoader());
 		if(parser==null)
 			parser=new ConfigrationParser(null,null);
+		if(generator==null)
+			generator=new MybatisGenerator(this);
 	}
 
 	public List<ITable> getTables() {
@@ -61,5 +63,10 @@ public class PluginContext extends PropertiesAdapter{
 	public void setLoader(ClassLoader loader) {
 		this.loader = loader;
 	}
-	
+	public Generator getGenerator() {
+		return generator;
+	}
+	public void setGenerator(Generator generator) {
+		this.generator = generator;
+	}
 }
