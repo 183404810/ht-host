@@ -2,6 +2,7 @@ package ht.plugin.configration;
 
 import ht.plugin.configration.config.JDBCConfig;
 import ht.plugin.configration.config.JavaFileConfig;
+import ht.plugin.configration.config.TableSettingConfig;
 import ht.plugin.context.PluginContext;
 import ht.plugin.exception.XMLParserException;
 import ht.plugin.properties.Constant;
@@ -116,7 +117,14 @@ public class XMLConfigrationParser extends AbstractParser{
 					config.setDbConfig(dbConfig);
 					break;
 				case "tableSetting":
-					
+					TableSettingConfig tsconfig=new TableSettingConfig();
+					config.setTbConfig(tsconfig);
+					tsconfig.setSchema(Boolean.valueOf(properties.get("isSchema").toString()));
+					tsconfig.setEnableCountByExample(Boolean.valueOf(properties.get("enableCountByExample").toString()));
+					tsconfig.setEnableDeleteByExample(Boolean.valueOf(properties.get("enableDeleteByExample").toString()));
+					tsconfig.setEnableUpdateByExample(Boolean.valueOf(properties.get("enableUpdateByExample").toString()));
+					tsconfig.setEnableSelectByExample(Boolean.valueOf(properties.get("enableSelectByExample").toString()));
+					tsconfig.setSelectByExampleQueryId(Boolean.valueOf(properties.get("selectByExampleQueryId").toString()));
 					break;
 				case "javaModelGenerator":
 				case "sqlMapGenerator":

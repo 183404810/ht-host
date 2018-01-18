@@ -1,5 +1,6 @@
 package ht.plugin.actions;
 
+
 import ht.plugin.adapter.ConfigFileAdapter;
 import ht.plugin.configration.Configration;
 import ht.plugin.configration.XMLConfigrationParser;
@@ -8,6 +9,7 @@ import ht.plugin.context.PluginContext;
 import ht.plugin.exception.XMLParserException;
 import ht.plugin.util.FindJar;
 import ht.plugin.util.Tools;
+import ht.plugin.wizard.WizardDialogExt;
 import ht.plugin.wizard.WizardWindow;
 
 import java.io.File;
@@ -23,6 +25,8 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
@@ -88,11 +92,27 @@ public class CodeAction implements IObjectActionDelegate {
 	}
 
 	private void createWizard(PluginContext context){
-		JDBCConfig dbconfig=context.getConfig().getDbConfig();
-		if(dbconfig==null) return;
-		WizardWindow w=new WizardWindow(this.selectedFile,context);                          
-		
-		
+		try{
+			JDBCConfig dbconfig=context.getConfig().getDbConfig();
+			if(dbconfig==null) return;
+			WizardWindow w=new WizardWindow(this.selectedFile,context);                          
+			if (!w.isValidate()) {
+				MessageDialog.openError(this.shell, "提醒", "配置文件有问题，请检查下列配置:\n" + w.getMessage());
+				return;
+			}
+			WizardDialogExt dialog = new WizardDialogExt(this.shell, w);
+			dialog.setPageSize(550, 450);
+			dialog.create();
+
+			Rectangle screenSize = Display.getDefault().getClientArea();
+			Shell shell = dialog.getShell();
+			shell.setLocation((screenSize.width - dialog.getShell().getBounds().width) / 2, (
+					screenSize.height - dialog.getShell().getBounds().height) / 2);
+			dialog.open();
+		}catch(Exception e){
+			Tools.println("show window is error:" + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	private IPath findDriver(String driverName){

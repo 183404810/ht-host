@@ -3,9 +3,13 @@ package ht.plugin.context;
 import ht.plugin.adapter.PropertiesAdapter;
 import ht.plugin.configration.Configration;
 import ht.plugin.configration.ConfigrationParser;
+import ht.plugin.generate.GeneratedFile;
 import ht.plugin.introspect.ITable;
 import ht.plugin.util.HtClassLoader;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.SQLException;
 import java.util.List;
 
 public class PluginContext extends PropertiesAdapter{
@@ -18,11 +22,8 @@ public class PluginContext extends PropertiesAdapter{
 	private ConfigrationParser parser;
 	private ClassLoader loader;
 	private Generator generator;
-	
-	public void generat(){
-		
-	}
-	
+	private List<GeneratedFile> generatedFiles;
+
 	public PluginContext(){
 		if(config==null)
 			config=new Configration();
@@ -33,27 +34,31 @@ public class PluginContext extends PropertiesAdapter{
 		if(generator==null)
 			generator=new MybatisGenerator(this);
 	}
-
+	
+	public Connection getConn() throws InstantiationException, IllegalAccessException, SQLException{
+		Driver driver=(Driver)HtClassLoader.loadClass(config).newInstance();
+		Connection conn=config.getDbConfig().getConn(driver);
+		return  conn;
+	}
+	
+	public void generat(List<String> tableList){
+		this.generator.generate(this.generatedFiles,tableList);
+	}
 	public List<ITable> getTables() {
 		return tables;
 	}
-
 	public void setTables(List<ITable> tables) {
 		this.tables = tables;
 	}
-
 	public Configration getConfig() {
 		return config;
 	}
-
 	public void setConfig(Configration config) {
 		this.config = config;
 	}
-
 	public ConfigrationParser getParser() {
 		return parser;
 	}
-
 	public void setParser(ConfigrationParser parser) {
 		this.parser = parser;
 	}

@@ -3,6 +3,7 @@ package ht.plugin.configration;
 import ht.plugin.configration.config.JDBCConfig;
 import ht.plugin.configration.config.JSFileConfig;
 import ht.plugin.configration.config.JavaFileConfig;
+import ht.plugin.configration.config.TableSettingConfig;
 import ht.plugin.configration.config.XmlFileConfig;
 import ht.plugin.context.PluginContext;
 import ht.plugin.properties.LayoutEnum;
@@ -18,9 +19,11 @@ public class Configration {
 	private JDBCConfig dbConfig;
 	private JSFileConfig jsConfig;
 	private XmlFileConfig xfconfig;
+	private TableSettingConfig tbConfig;
 	private List<String> classEntry;
 	private Properties properties;
 	private PluginContext context;
+	
 	private List<LayoutEnum> layout;
 	
 	public Configration(){
@@ -79,5 +82,11 @@ public class Configration {
 	}
 	public void setLayout(List<LayoutEnum> layout) {
 		this.layout = layout;
+	}
+	public TableSettingConfig getTbConfig() {
+		return tbConfig;
+	}
+	public void setTbConfig(TableSettingConfig tbConfig) {
+		this.tbConfig = tbConfig;
 	}
 }

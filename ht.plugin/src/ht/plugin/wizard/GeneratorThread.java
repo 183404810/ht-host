@@ -53,7 +53,7 @@ public class GeneratorThread implements IWorkspaceRunnable{
 	    	subMonitor.worked(50);
 	    	monitor.subTask("Generating Files from Database Tables");
 	    	SubMonitor spm = subMonitor.newChild(950);
-	    	 
+	    	this.context.generat(tableList);
 	    }catch(Exception e){
 	    }
 	}
