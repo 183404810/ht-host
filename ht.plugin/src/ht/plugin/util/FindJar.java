@@ -82,10 +82,10 @@ public class FindJar {
 		try {
 			IJavaElement[] eles=jPackage.getChildren();
 			if(eles==null || eles.length<=0) return false;
-			String packageName=driverName.substring(0,driverName.indexOf("."));
+			//String packageName=driverName.substring(0,driverName.indexOf("."));
 			for(IJavaElement ele: eles){
 				if(ele instanceof PackageFragment){
-					if(ele.getElementName().equals(packageName)){
+					if(driverName.indexOf(ele.getElementName())>-1){
 						IJavaElement[] jeles=((PackageFragment) ele).getChildren();
 						for(IJavaElement jele: jeles){
 							if(jele instanceof IClassFile){

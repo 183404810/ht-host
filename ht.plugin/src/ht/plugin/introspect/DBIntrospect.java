@@ -39,6 +39,7 @@ public class DBIntrospect {
 					table.setTableName(tbinfo[1]);
 				
 				calPrimaryKey(rs,table);
+				calColumn(rs,table);
 			}
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -49,23 +50,39 @@ public class DBIntrospect {
 		}
 	}
 	
+	public void calColumn(DatabaseMetaData dmd,ITable table){
+		try{
+			List<IColumn> column=new ArrayList<>();
+			table.setColumns(column);
+			ResultSet rs=dmd.getColumns(table.getCatalog(),table.getSchema(), table.getTableName(),null);
+			while(rs.next()){
+				IColumn col=new IColumn(table);
+				column.add(col);
+				col.setColumnName(rs.getString("COLUMN_NAME"));
+				col.setLength(rs.getInt("COLUMN_SIZE"));
+				col.setTypeName(rs.getString("TYPE_NAME"));
+				col.setRemarks(rs.getString("REMARKS"));
+				col.setNullAble(rs.getInt("NULLABLE"));
+				col.setDefaultValue(rs.getString("COLUMN_DEF"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	
 	public void calPrimaryKey(DatabaseMetaData dmd,ITable table){
 		try {
 			List<IColumn> column=new ArrayList<>();
+			table.setKeyColumns(column);
 			ResultSet rs=dmd.getPrimaryKeys(table.getCatalog(),table.getSchema(), table.getTableName());
 			while(rs.next()){
 				String columnName=rs.getString("COLUMN_NAME");
 				IColumn col=new IColumn(table);
-				col.setTable(table);
-				col.setColumnName(columnName);
 				column.add(col);
-				table.setColumns(column);
-				//col.setLength(length)
-				//col.setRemarks(remarks);
-			}
+				col.setColumnName(columnName);
+		 	}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 }

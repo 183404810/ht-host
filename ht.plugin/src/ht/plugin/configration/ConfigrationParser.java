@@ -26,6 +26,8 @@ public class ConfigrationParser{
 		try {
 			parser(parser,new File(path), config);
 		} catch (Exception e) {
+			if(this.parseErrors.size()>0)
+				throw new XMLParserException(this.parseErrors);
 			e.printStackTrace();
 		}
  	}
@@ -39,6 +41,8 @@ public class ConfigrationParser{
 				throw new XMLParserException(this.parseErrors);
 			}
 		} catch (Exception e) {
+			if(this.parseErrors.size()>0)
+				throw new XMLParserException(this.parseErrors);
 			e.printStackTrace();
 		}
  	}

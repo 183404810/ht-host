@@ -10,6 +10,7 @@ import ht.plugin.util.HtClassLoader;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PluginContext extends PropertiesAdapter{
@@ -26,13 +27,15 @@ public class PluginContext extends PropertiesAdapter{
 
 	public PluginContext(){
 		if(config==null)
-			config=new Configration();
+			config=new Configration(this);
 		if(loader==null)
 			loader=new HtClassLoader("",System.class.getClassLoader());
 		if(parser==null)
 			parser=new ConfigrationParser(null,null);
 		if(generator==null)
 			generator=new MybatisGenerator(this);
+		if(tables==null)
+			tables=new ArrayList<>();
 	}
 	
 	public Connection getConn() throws InstantiationException, IllegalAccessException, SQLException{

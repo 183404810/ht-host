@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -30,17 +29,20 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class XMLConfigrationParser extends AbstractParser{
-	private List<String> warnings;
-	private List<String> parseErrors;
 	
-	@Override
+	public XMLConfigrationParser(){
+		if(this.properties==null)
+			this.properties=new Properties();
+	}
+	
+ 	@Override
 	public void parser(InputStream is, Configration config) throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(true);
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			builder.setEntityResolver(new ParserResolver());
-			builder.setErrorHandler(new ParserErrorHanlder(warnings,parseErrors));
+			builder.setErrorHandler(new ParserErrorHanlder(this.warnings,this.parseErrors));
 			Document document = null;
 		     
 			try {
@@ -60,7 +62,7 @@ public class XMLConfigrationParser extends AbstractParser{
 				throw new XMLParserException("暂时只能支持myBatis文档！");
 			}
 			parserXml(rootNode,config);
-			config.getContext().putAll(this.getProperties());
+			config.getContext().putAll(this.properties);
 			config.getContext().putAll(System.getProperties());
 		} catch (ParserConfigurationException e) {
 			this.parseErrors.add(e.getMessage());
@@ -69,62 +71,63 @@ public class XMLConfigrationParser extends AbstractParser{
 	
 	private void parserXml(Element rootNode,Configration config){
 		NodeList nodes=rootNode.getChildNodes();
-		Properties properties;
+		Properties prop;
 		for(int i=0;i<nodes.getLength();i++){
 			Node node=nodes.item(i);
 			if(node.getNodeType()!=1) continue;
-			properties=parserAttribute(node);			
+			prop=parserAttribute(node);			
 			if("properties".equals(node.getNodeName())){
-				String url=properties.getProperty("url");
+				String url=prop.getProperty("url");
 				try {
 					URL openUrl=new URL(url);
 					InputStream inStream=openUrl.openStream();
-					this.getProperties().load(inStream);
+					this.properties.load(inStream);
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}else if("classPathEntry".equals(node.getNodeName())){
-				String classUrl=properties.getProperty("location");
+				String classUrl=prop.getProperty("location");
 				config.getClassEntry().add(classUrl);
 			}else if("context".equals(node.getNodeName())){
-				parserContext(node,config,properties);
+				parserContext(node,config);
 			}
 		}
 	}
 	
-	private void parserContext(Node node,Configration config,Properties properties){
+	private void parserContext(Node node,Configration config){
 		NodeList nlist=node.getChildNodes();
 		PluginContext context=config.getContext();
 		Map<String,JavaFileConfig> jConfig=new HashMap<>();
-		
+		Properties xmlPropertes=null;
 		for(int i=0;i<nlist.getLength();i++){
 			Node cnode=nlist.item(i);
 			if(cnode.getNodeType()!=Node.ELEMENT_NODE) continue;
+			xmlPropertes=parserAttribute(cnode);		
 			switch(cnode.getNodeName()){
 				case "property":
-					String key=properties.getProperty("name");
-					String value=properties.getProperty("value");
+					String key=xmlPropertes.getProperty("name");
+					String value=xmlPropertes.getProperty("value");
 					context.setProperty(key,value);
 					break;
 				case "jdbcConnection":
-					String url=properties.getProperty("connectionURL");
-					String driverClass=properties.getProperty("driverClass");
-					String userId=properties.getProperty("userId");
-					String password=properties.getProperty("password");
+					String url=xmlPropertes.getProperty("connectionURL");
+					String driverClass=xmlPropertes.getProperty("driverClass");
+					String userId=xmlPropertes.getProperty("userId");
+					String password=xmlPropertes.getProperty("password");
 					JDBCConfig dbConfig=new JDBCConfig(url,driverClass,userId,password);
 					config.setDbConfig(dbConfig);
 					break;
 				case "tableSetting":
 					TableSettingConfig tsconfig=new TableSettingConfig();
 					config.setTbConfig(tsconfig);
-					tsconfig.setSchema(Boolean.valueOf(properties.get("isSchema").toString()));
-					tsconfig.setEnableCountByExample(Boolean.valueOf(properties.get("enableCountByExample").toString()));
-					tsconfig.setEnableDeleteByExample(Boolean.valueOf(properties.get("enableDeleteByExample").toString()));
-					tsconfig.setEnableUpdateByExample(Boolean.valueOf(properties.get("enableUpdateByExample").toString()));
-					tsconfig.setEnableSelectByExample(Boolean.valueOf(properties.get("enableSelectByExample").toString()));
-					tsconfig.setSelectByExampleQueryId(Boolean.valueOf(properties.get("selectByExampleQueryId").toString()));
+					tsconfig.setSchema(Boolean.valueOf(xmlPropertes.get("isSchema").toString()));
+					tsconfig.setEnableCountByExample(Boolean.valueOf(xmlPropertes.get("enableCountByExample").toString()));
+					tsconfig.setEnableDeleteByExample(Boolean.valueOf(xmlPropertes.get("enableDeleteByExample").toString()));
+					tsconfig.setEnableUpdateByExample(Boolean.valueOf(xmlPropertes.get("enableUpdateByExample").toString()));
+					tsconfig.setEnableSelectByExample(Boolean.valueOf(xmlPropertes.get("enableSelectByExample").toString()));
+					tsconfig.setSelectByExampleQueryId(Boolean.valueOf(xmlPropertes.get("selectByExampleQueryId").toString()));
 					break;
 				case "javaModelGenerator":
 				case "sqlMapGenerator":
@@ -136,13 +139,13 @@ public class XMLConfigrationParser extends AbstractParser{
 					if(!config.getLayout().contains(LayoutEnum.CONTROLLER_LAYOUT)) break;
 					
 					JavaFileConfig fconfig=new JavaFileConfig();
-					fconfig.setTargetPackage(properties.getProperty("targetPackage"));
-					fconfig.setEnableInterfaceSupInterfaceGenericity(Boolean.getBoolean(properties.getProperty("enableInterfaceSupInterfaceGenericity")));
-					fconfig.setEnableSupClassGenericity(Boolean.parseBoolean(properties.getProperty("enableSupClassGenericity")));
-					fconfig.setExtendSupClass(properties.getProperty("extendSupClass"));
-					fconfig.setImplementationPackage(properties.getProperty("implementationPackage"));
-					fconfig.setInterfaceExtendSupInterface(properties.getProperty("interfaceExtendSupInterface"));
-					fconfig.setTargetProject(properties.getProperty("targetProject"));
+					fconfig.setTargetPackage(xmlPropertes.getProperty("targetPackage"));
+					fconfig.setEnableInterfaceSupInterfaceGenericity(Boolean.getBoolean(xmlPropertes.getProperty("enableInterfaceSupInterfaceGenericity")));
+					fconfig.setEnableSupClassGenericity(Boolean.parseBoolean(xmlPropertes.getProperty("enableSupClassGenericity")));
+					fconfig.setExtendSupClass(xmlPropertes.getProperty("extendSupClass"));
+					fconfig.setImplementationPackage(xmlPropertes.getProperty("implementationPackage"));
+					fconfig.setInterfaceExtendSupInterface(xmlPropertes.getProperty("interfaceExtendSupInterface"));
+					fconfig.setTargetProject(xmlPropertes.getProperty("targetProject"));
 					jConfig.put(cnode.getNodeName(), fconfig);
 					NodeList childs=cnode.getChildNodes();
 					for(int j=0;j<childs.getLength();j++){
@@ -159,6 +162,7 @@ public class XMLConfigrationParser extends AbstractParser{
 	
 	private Properties parserAttribute(Node node){
 		Properties properties=new Properties();
+		node.getNodeName();
 		NamedNodeMap list=node.getAttributes();
 		for(int i=0;i<list.getLength();i++){
 			String value=parserTokens(list.item(i).getNodeValue());

@@ -10,8 +10,8 @@ import java.util.Properties;
 
 public abstract class AbstractParser implements Parser{
 	protected Properties properties;
-	private List<String> warnings;
-	private List<String> parseErrors;
+	protected List<String> warnings;
+	protected List<String> parseErrors;
 	
 	@Override
 	public void parser(String path,Configration config) throws Exception {
@@ -45,23 +45,18 @@ public abstract class AbstractParser implements Parser{
 	public Properties getProperties() {
 		return properties;
 	}
-
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
-
 	public List<String> getWarnings() {
 		return warnings;
 	}
-
 	public void setWarnings(List<String> warnings) {
 		this.warnings = warnings;
 	}
-
 	public List<String> getParseErrors() {
 		return parseErrors;
 	}
-
 	public void setParseErrors(List<String> parseErrors) {
 		this.parseErrors = parseErrors;
 	}

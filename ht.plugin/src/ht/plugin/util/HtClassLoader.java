@@ -17,6 +17,20 @@ public class HtClassLoader extends ClassLoader{
 	private String classPath;
 	private static URLClassLoader urlLoader;
 	
+	public static Object newObject(String type){
+		try {
+			Class clazz= HtClassLoader.class.getClassLoader().loadClass(type);
+			return clazz.newInstance();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static Class<?> loadClass(Configration config) {
 		List<String> classpath=config.getClassEntry();
 		String driverName=config.getDbConfig().getDriverClass();

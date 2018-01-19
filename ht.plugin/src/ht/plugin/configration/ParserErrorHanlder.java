@@ -22,6 +22,7 @@ public class ParserErrorHanlder implements ErrorHandler{
 
 	@Override
 	public void error(SAXParseException exception) throws SAXException {
+		exception.printStackTrace();
 		this.errors.add(exception.getMessage());
 	}
 

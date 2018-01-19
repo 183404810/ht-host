@@ -26,13 +26,14 @@ public class Configration {
 	
 	private List<LayoutEnum> layout;
 	
-	public Configration(){
+	public Configration(PluginContext context){
 		if(config==null)
 			config=new HashMap<>();
 		if(classEntry==null)
 			classEntry=new ArrayList<>();
 		if(layout==null)
 			layout=new ArrayList<>();
+		this.context=context;	
 	}
 	
 	public JDBCConfig getDbConfig() {

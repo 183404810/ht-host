@@ -80,7 +80,7 @@ public class CodeAction implements IObjectActionDelegate {
 					MessageDialog.openError(this.shell, "提醒", "未找到驱动包");
 				}
 				cache.put(driverClassName, path);
-				config.getClassEntry().add(driverClassName);
+				config.getClassEntry().add(path.toFile().getPath());
 				createWizard(context);
 			}
 		} catch (XMLParserException e) {
