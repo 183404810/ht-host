@@ -46,6 +46,10 @@ public class PluginContext extends PropertiesAdapter{
 	
 	public void generat(List<String> tableList){
 		this.generator.generate(this.generatedFiles,tableList);
+		for(ITable table:this.tables){
+			
+			
+		}
 	}
 	public List<ITable> getTables() {
 		return tables;
