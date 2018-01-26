@@ -7,13 +7,41 @@ import java.util.List;
 
 
 public class GeneratorJavaFile extends GeneratedFile{
-	List<IField> fields;
-	List<IMethod> methods;
-	
-	
+	private List<IField> fields;
+	private List<IMethod> methods;
+	private String annotation;
+	private String fileName;
+	private String modifier;
+
 	
 	public GeneratorJavaFile(String targetProject) {
 		super(targetProject);
 	}
 	
+	public GeneratorJavaFile(List<IField> fields,List<IMethod> methods,String targetProject){
+		super(targetProject);
+		this.fields=fields;
+		this.methods=methods;
+	}
+	
+	public String generator(){
+		StringBuilder sb=getFileHeader();
+		sb.append("{").append(newLine);
+		for(IField filed:fields){
+			sb.append(filed.getFieldContext());
+		}
+		for(IMethod method:methods){
+			sb.append(method.getMethodContext());
+		}
+		sb.append("}");
+		return sb.toString();
+	}
+	
+	private StringBuilder getFileHeader(){
+		StringBuilder sb=new StringBuilder();
+		sb.append("package ").append(targetProject).append(newLine);
+		sb.append(annotation).append(newLine).append(modifier).append(" class ");
+		sb.append(fileName);
+		return sb;
+	}
 }
