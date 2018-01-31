@@ -13,7 +13,6 @@ public class GeneratorJavaFile extends GeneratedFile{
 	private String fileName;
 	private String modifier;
 
-	
 	public GeneratorJavaFile(String targetProject) {
 		super(targetProject);
 	}
@@ -28,7 +27,7 @@ public class GeneratorJavaFile extends GeneratedFile{
 		StringBuilder sb=getFileHeader();
 		sb.append("{").append(newLine);
 		for(IField filed:fields){
-			sb.append(filed.getFieldContext());
+			sb.append(filed.getJavaFieldContext());
 		}
 		for(IMethod method:methods){
 			sb.append(method.getMethodContext());
@@ -37,7 +36,7 @@ public class GeneratorJavaFile extends GeneratedFile{
 		return sb.toString();
 	}
 	
-	private StringBuilder getFileHeader(){
+	public StringBuilder getFileHeader(){
 		StringBuilder sb=new StringBuilder();
 		sb.append("package ").append(targetProject).append(newLine);
 		sb.append(annotation).append(newLine).append(modifier).append(" class ");

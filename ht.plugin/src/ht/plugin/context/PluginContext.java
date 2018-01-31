@@ -5,6 +5,7 @@ import ht.plugin.configration.Configration;
 import ht.plugin.configration.ConfigrationParser;
 import ht.plugin.generate.GeneratedFile;
 import ht.plugin.introspect.ITable;
+import ht.plugin.properties.LayoutEnum;
 import ht.plugin.util.HtClassLoader;
 
 import java.sql.Connection;
@@ -12,6 +13,7 @@ import java.sql.Driver;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PluginContext extends PropertiesAdapter{
 	/**
@@ -44,10 +46,11 @@ public class PluginContext extends PropertiesAdapter{
 		return  conn;
 	}
 	
-	public void generat(List<String> tableList){
+	public void generat(List<String> tableList,Map<LayoutEnum, Boolean> codeLayout){
 		this.generator.generate(this.generatedFiles,tableList);
+		
 		for(ITable table:this.tables){
-			
+			 
 			
 		}
 	}

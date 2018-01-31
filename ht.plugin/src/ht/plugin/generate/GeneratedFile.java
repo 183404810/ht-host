@@ -6,4 +6,6 @@ public abstract class GeneratedFile {
 	public GeneratedFile(String targetProject){
 		this.targetProject=targetProject;
 	}
+	public abstract String generator();
+	public abstract StringBuilder getFileHeader();
 }

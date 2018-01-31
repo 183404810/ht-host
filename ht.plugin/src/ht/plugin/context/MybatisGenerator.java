@@ -18,8 +18,5 @@ public class MybatisGenerator implements Generator{
 		generatedFiles.clear();
 		DBIntrospect introspect=new DBIntrospect(context);
 		introspect.introspect(tableList);
-		
-		
-		
 	}
 }

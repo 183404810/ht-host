@@ -1,12 +1,10 @@
 package ht.plugin.introspect;
 
+import java.util.List;
+
 public class IMethod extends IElement{
-	
-	private String startM="{";
-	private String endM="}";
-	private String splitStr=" ";
 	private String methodContext;
-	private IJavaType params;
+	private List<IJavaType> params;
 	
 	public IMethod(String tabContext,String name,IJavaType type,
 			String modifier,String annotation){
@@ -20,18 +18,10 @@ public class IMethod extends IElement{
 			sb.append("static").append(splitStr);
 		if(isFinal)
 			sb.append("final").append(splitStr);
-		sb.append(name).append(startM).append(endEnter);
+		sb.append(name).append("(").append(")").append(startM).append(endEnter);
 		return sb.toString();
 	}
-	
-	private StringBuilder getMethodHeader(){
-		StringBuilder sb=new StringBuilder();
-		sb.append(remarkStart);
-		
-		return sb;
-	}
-
-	public void setParams(IJavaType params) {
+	public void setParams(List<IJavaType> params) {
 		this.params = params;
 	}
 }
