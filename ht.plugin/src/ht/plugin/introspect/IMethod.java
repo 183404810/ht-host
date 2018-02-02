@@ -7,8 +7,9 @@ public class IMethod extends IElement{
 	private List<IJavaType> params;
 	
 	public IMethod(String tabContext,String name,IJavaType type,
-			String modifier,String annotation){
+			String modifier,String annotation,List<IJavaType> params){
 		super(tabContext,name,type,modifier,annotation);
+		this.params=params;
 	}
 	
 	public String getMethodContext(){
@@ -18,9 +19,19 @@ public class IMethod extends IElement{
 			sb.append("static").append(splitStr);
 		if(isFinal)
 			sb.append("final").append(splitStr);
-		sb.append(name).append("(").append(")").append(startM).append(endEnter);
+		sb.append(name).append("(");
+		int i=0;
+		for(IJavaType type:params){
+			String name=type.getTypeName().substring(0,1).toLowerCase()+type.getTypeName().substring(1);
+			if(i>0)
+				sb.append(",");
+			sb.append(type.getTypeName()).append(splitStr).append(name);
+			i++;
+		}
+		sb.append(")").append(startM).append(endEnter).append(methodContext).append(endEnter).append(endM);
 		return sb.toString();
 	}
+	
 	public void setParams(List<IJavaType> params) {
 		this.params = params;
 	}

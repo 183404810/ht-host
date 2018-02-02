@@ -49,10 +49,7 @@ public class PluginContext extends PropertiesAdapter{
 	public void generat(List<String> tableList,Map<LayoutEnum, Boolean> codeLayout){
 		this.generator.generate(this.generatedFiles,tableList);
 		
-		for(ITable table:this.tables){
-			 
-			
-		}
+		
 	}
 	public List<ITable> getTables() {
 		return tables;

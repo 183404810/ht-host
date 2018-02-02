@@ -42,4 +42,10 @@ public abstract class IElement {
 	protected StringBuilder newLine(StringBuilder sb){
 		return sb.append(endEnter);
 	}
+	public String getName() {
+		return name;
+	}
+	public IJavaType getType() {
+		return type;
+	}
 }
