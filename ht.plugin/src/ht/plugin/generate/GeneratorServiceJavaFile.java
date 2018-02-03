@@ -25,7 +25,7 @@ public class GeneratorServiceJavaFile extends GeneratedFile{
 	}
 
 	public GeneratorServiceJavaFile(String fileName,String entrityName,Configration config,String key,LayoutEnum layout){
-		super(config.getConfig().get("key").getTargetProject(),config.getConfig().get("key").getTargetPackage(),layout);
+		super(config.getConfig().get(key).getTargetProject(),config.getConfig().get(key).getTargetPackage(),layout);
 		this.fileName=fileName;
 		if(fileName.endsWith("service") || fileName.endsWith("dao")){
 			isInterface=true;
