@@ -7,11 +7,11 @@ import ht.plugin.configration.Configration;
 import ht.plugin.configration.config.JavaFileConfig;
 import ht.plugin.generate.GeneratedFile;
 import ht.plugin.generate.GeneratorJavaFile;
+import ht.plugin.generate.GeneratorServiceJavaFile;
 import ht.plugin.introspect.DBIntrospect;
 import ht.plugin.introspect.IColumn;
 import ht.plugin.introspect.IField;
 import ht.plugin.introspect.IJavaType;
-import ht.plugin.introspect.IMethod;
 import ht.plugin.introspect.ITable;
 import ht.plugin.properties.LayoutEnum;
 
@@ -30,26 +30,44 @@ public class MybatisGenerator implements Generator{
 		DBIntrospect introspect=new DBIntrospect(context);
 		introspect.introspect(tableList);
 		for(ITable table:context.getTables()){
+			String tableName=getTableEntriyName(table.getTableName());
 			for(String key:config.getConfig().keySet()){
 				JavaFileConfig cfg=config.getConfig().get(key);
 				List<IField> fields=getIField(table.getColumns());
-			 
+				String targetProject=cfg.getTargetProject();
+				String targetPakage=cfg.getTargetPackage();
 				switch(key){
 					case "javaModelGenerator":
-						String targetProject=cfg.getTargetProject();
-						GeneratorJavaFile javaFile=new GeneratorJavaFile(fields,targetProject);
-						generatedFiles.add(javaFile);
+						generatedFiles.add(new GeneratorJavaFile(fields,targetProject,targetPakage,tableName,"public",tableName,LayoutEnum.DAO_LAYOUT));
 					case "javaServiceGenerator":
-						
-						
-						
+						if(cfg.isEnableInterfaceSupInterfaceGenericity())
+							generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Service",tableName,config,key,LayoutEnum.SERVICE_LAYOUT));
+						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"ServiceImpl",tableName,config,key,LayoutEnum.SERVICE_LAYOUT));
 					case "sqlMapGenerator":
+						
+						
 					case "javaDaoGenerator":
+						if(cfg.isEnableInterfaceSupInterfaceGenericity())
+							generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Dao",tableName,config,key,LayoutEnum.DAO_LAYOUT));
+						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"DaoImpl",tableName,config,key,LayoutEnum.DAO_LAYOUT));
 					case "javaControllerGenerator":
+						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Controller",tableName,config,key,LayoutEnum.CONTROLLER_LAYOUT));
 				}
 			}
 		}
 	}
+	
+	private String getTableEntriyName(String tableName){
+		String[] t=tableName.split("_");
+		StringBuilder sb=new StringBuilder();
+		for(String s:t){
+			if(sb.length()<=0)
+				sb.append(s);
+			sb.append(s.substring(0, 1).toUpperCase()+s.substring(1));
+		}
+		return sb.toString();
+	}
+	
 	
 	private List<IField> getIField(List<IColumn> columns){
 		List<IField> fields=new ArrayList<>();

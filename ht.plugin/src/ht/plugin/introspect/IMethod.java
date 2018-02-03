@@ -32,7 +32,22 @@ public class IMethod extends IElement{
 		return sb.toString();
 	}
 	
+	public String getImport(){
+		StringBuilder sb=new StringBuilder();
+		if(type!=null && type.getPackageTarget()!=null){
+			newLine(sb.append(type.getPackageTarget()).append(type.getTypeName()).append(";"));
+		}
+		for(IJavaType type:params){
+			newLine(sb.append(type.getPackageTarget()).append(type.getTypeName()).append(";"));
+		}
+		return sb.toString();
+	}
+	
 	public void setParams(List<IJavaType> params) {
 		this.params = params;
+	}
+	
+	public void setMethodContext(String methodContext){
+		this.methodContext=methodContext;
 	}
 }

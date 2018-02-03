@@ -3,7 +3,7 @@ package ht.plugin.generate;
 import java.util.List;
 
 import ht.plugin.introspect.IField;
-import ht.plugin.introspect.IMethod;
+import ht.plugin.properties.LayoutEnum;
 
 public class GeneratorJSVMFile extends GeneratedFile{
 	private List<IField> fields;
@@ -11,12 +11,12 @@ public class GeneratorJSVMFile extends GeneratedFile{
 	private String fileName;
 	private String modifier;
 	
-	public GeneratorJSVMFile(String targetProject) {
-		super(targetProject);
+	public GeneratorJSVMFile(String targetProject,String targetPakage,LayoutEnum layout) {
+		super(targetProject,targetPakage,layout);
 	}
 	
-	public GeneratorJSVMFile(List<IField> fields,String targetProject){
-		super(targetProject);
+	public GeneratorJSVMFile(List<IField> fields,String targetProject,String targetPakage,LayoutEnum layout){
+		super(targetProject,targetPakage,layout);
 		this.fields=fields;
 	}
 	
@@ -26,7 +26,6 @@ public class GeneratorJSVMFile extends GeneratedFile{
 		for(IField filed:fields){
 			sb.append(filed.getJSModelContext());
 		}
-		 
 		sb.append("}");
 		return sb.toString();
 	}

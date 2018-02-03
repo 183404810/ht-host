@@ -1,9 +1,11 @@
 package ht.plugin.generate;
 
+import ht.plugin.properties.LayoutEnum;
+
 public class GeneratorXmlFile extends GeneratedFile{
 
-	public GeneratorXmlFile(String targetProject) {
-		super(targetProject);
+	public GeneratorXmlFile(String targetProject,String targetPakage,LayoutEnum layout) {
+		super(targetProject,targetPakage,layout);
 	}
 
 	@Override

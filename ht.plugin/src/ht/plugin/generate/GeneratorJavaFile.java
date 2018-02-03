@@ -6,22 +6,24 @@ import java.util.List;
 import ht.plugin.introspect.IField;
 import ht.plugin.introspect.IJavaType;
 import ht.plugin.introspect.IMethod;
+import ht.plugin.properties.LayoutEnum;
 
 
 public class GeneratorJavaFile extends GeneratedFile{
 	private List<IField> fields;
 	private List<IMethod> methods;
-	private String annotation;
-	private String fileName;
-	private String modifier;
 
-	public GeneratorJavaFile(String targetProject) {
-		super(targetProject);
+	public GeneratorJavaFile(String targetProject,String targetPakage,LayoutEnum layout) {
+		super(targetProject,targetPakage,layout);
 	}
 	
-	public GeneratorJavaFile(List<IField> fields,String targetProject){
-		super(targetProject);
+	public GeneratorJavaFile(List<IField> fields,String targetProject,String targetPakage,
+			String fileName,String modifer,String annotaion,LayoutEnum layout){
+		super(targetProject,targetPakage,layout);
 		this.fields=fields;
+		this.fileName=fileName;
+		this.modifier=modifier;
+		this.annotation=annotation;
 		generateGetSetMethod();
 	}
 	
@@ -49,10 +51,12 @@ public class GeneratorJavaFile extends GeneratedFile{
 			List<IJavaType> setParams=new ArrayList<>();
 			setParams.add(field.getType());
 			IMethod setMethod=new IMethod(tabContext,setName,IJavaType.getVoidType(),modifier,setName,setParams);
+			setMethod.setMethodContext("this."+field.getName()+"="+field.getName());
 			this.methods.add(setMethod);
 			String getName="get"+fs;
 			setParams.clear();
 			IMethod getMethod=new IMethod(tabContext,getName,field.getType(),modifier,getName,setParams);
+			getMethod.setMethodContext("return "+"this."+field);
 			this.methods.add(getMethod);
 		}
 	}

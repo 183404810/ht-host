@@ -100,6 +100,7 @@ public class XMLConfigrationParser extends AbstractParser{
 		NodeList nlist=node.getChildNodes();
 		PluginContext context=config.getContext();
 		Map<String,JavaFileConfig> jConfig=new HashMap<>();
+		config.setConfig(jConfig);
 		Properties xmlPropertes=null;
 		for(int i=0;i<nlist.getLength();i++){
 			Node cnode=nlist.item(i);
@@ -132,11 +133,8 @@ public class XMLConfigrationParser extends AbstractParser{
 				case "javaModelGenerator":
 				case "sqlMapGenerator":
 				case "javaServiceGenerator":
-					if(!config.getLayout().contains(LayoutEnum.SERVICE_LAYOUT)) break;
 				case "javaDaoGenerator":
-					if(!config.getLayout().contains(LayoutEnum.DAO_LAYOUT)) break;
 				case "javaControllerGenerator":
-					if(!config.getLayout().contains(LayoutEnum.CONTROLLER_LAYOUT)) break;
 					
 					JavaFileConfig fconfig=new JavaFileConfig();
 					fconfig.setTargetPackage(xmlPropertes.getProperty("targetPackage"));

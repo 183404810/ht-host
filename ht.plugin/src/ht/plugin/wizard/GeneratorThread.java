@@ -55,6 +55,7 @@ public class GeneratorThread implements IWorkspaceRunnable{
 	    	SubMonitor spm = subMonitor.newChild(950);
 	    	this.context.generat(tableList,codeLayout);
 	    }catch(Exception e){
+	    	System.out.println(e.getMessage());
 	    }
 	}
 	
