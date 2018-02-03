@@ -23,7 +23,6 @@ public class MybatisGenerator implements Generator{
 	}
 	
 	public void generate(List<GeneratedFile> generatedFiles,List<String> tableList){
-		if(generatedFiles==null) generatedFiles=new ArrayList<>();
 		generatedFiles.clear();
 		Configration config=context.getConfig();
  
@@ -39,10 +38,12 @@ public class MybatisGenerator implements Generator{
 				switch(key){
 					case "javaModelGenerator":
 						generatedFiles.add(new GeneratorJavaFile(fields,targetProject,targetPakage,tableName,"public",tableName,LayoutEnum.DAO_LAYOUT));
+						break;
 					case "javaServiceGenerator":
 						if(cfg.isEnableInterfaceSupInterfaceGenericity())
 							generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Service",tableName,config,key,LayoutEnum.SERVICE_LAYOUT));
 						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"ServiceImpl",tableName,config,key,LayoutEnum.SERVICE_LAYOUT));
+						break;
 					case "sqlMapGenerator":
 						
 						
@@ -50,8 +51,10 @@ public class MybatisGenerator implements Generator{
 						if(cfg.isEnableInterfaceSupInterfaceGenericity())
 							generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Dao",tableName,config,key,LayoutEnum.DAO_LAYOUT));
 						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"DaoImpl",tableName,config,key,LayoutEnum.DAO_LAYOUT));
+						break;
 					case "javaControllerGenerator":
 						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Controller",tableName,config,key,LayoutEnum.CONTROLLER_LAYOUT));
+						break;
 				}
 			}
 		}

@@ -58,7 +58,8 @@ public class PluginContext extends PropertiesAdapter{
 	}
 	
 	public void generat(List<String> tableList,Map<LayoutEnum, Boolean> codeLayout) throws Exception{
-		this.generator.generate(this.generatedFiles,tableList);
+		if(generatedFiles==null) generatedFiles=new ArrayList<>();
+		this.generator.generate(generatedFiles,tableList);
 		File targetFile=null;
 		String source=null;
 		Shell shell = new Shell(new Display(), 16793600);
