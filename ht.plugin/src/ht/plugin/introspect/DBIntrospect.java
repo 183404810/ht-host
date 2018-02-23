@@ -19,8 +19,9 @@ public class DBIntrospect {
 	}
 	
 	public void introspect(List<String> tableList){
+		Connection conn=null;
 		try {
-			Connection conn = context.getConn();
+			conn = context.getConfig().getDbConfig().getConn(context.getConfig());
 			TableSettingConfig tsconfig=context.getConfig().getTbConfig();
 			DatabaseMetaData rs=conn.getMetaData();
 			for(String tb:tableList){
@@ -41,12 +42,20 @@ public class DBIntrospect {
 				calPrimaryKey(rs,table);
 				calColumn(rs,table);
 			}
+			
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			if(conn!=null)
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 		}
 	}
 	

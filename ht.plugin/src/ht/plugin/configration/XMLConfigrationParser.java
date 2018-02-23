@@ -3,10 +3,10 @@ package ht.plugin.configration;
 import ht.plugin.configration.config.JDBCConfig;
 import ht.plugin.configration.config.JavaFileConfig;
 import ht.plugin.configration.config.TableSettingConfig;
+import ht.plugin.configration.config.XmlFileConfig;
 import ht.plugin.context.PluginContext;
 import ht.plugin.exception.XMLParserException;
 import ht.plugin.properties.Constant;
-import ht.plugin.properties.LayoutEnum;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -130,12 +130,20 @@ public class XMLConfigrationParser extends AbstractParser{
 					tsconfig.setEnableSelectByExample(Boolean.valueOf(xmlPropertes.get("enableSelectByExample").toString()));
 					tsconfig.setSelectByExampleQueryId(Boolean.valueOf(xmlPropertes.get("selectByExampleQueryId").toString()));
 					break;
-				case "javaModelGenerator":
+				case "javaClientGenerator":
 				case "sqlMapGenerator":
+					XmlFileConfig xfConfig=config.getXfconfig();
+					if(xfConfig==null){
+						xfConfig=new XmlFileConfig();
+					}
+					xfConfig.putAll(parserChild(cnode));
+					xfConfig.putAll(xmlPropertes);
+					config.setXfconfig(xfConfig);
+					break;
+				case "javaModelGenerator":
 				case "javaServiceGenerator":
 				case "javaDaoGenerator":
 				case "javaControllerGenerator":
-					
 					JavaFileConfig fconfig=new JavaFileConfig();
 					fconfig.setTargetPackage(xmlPropertes.getProperty("targetPackage"));
 					fconfig.setEnableInterfaceSupInterfaceGenericity(Boolean.getBoolean(xmlPropertes.getProperty("enableInterfaceSupInterfaceGenericity")));
@@ -156,6 +164,19 @@ public class XMLConfigrationParser extends AbstractParser{
 					break;
 			}
 		}
+	}
+	
+	private Properties parserChild(Node node){
+		Properties child=new Properties();
+		NodeList mplist=node.getChildNodes();
+		Properties t;
+		for(int k=0;k<mplist.getLength();k++){
+			Node cnode=mplist.item(k);
+			if(cnode.getNodeType()!=Node.ELEMENT_NODE) continue;
+			t=parserAttribute(cnode);
+			child.put(t.get("name"), t.get("value"));
+		}
+		return child;
 	}
 	
 	private Properties parserAttribute(Node node){

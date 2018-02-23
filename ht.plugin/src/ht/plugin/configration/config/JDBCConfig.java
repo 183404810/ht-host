@@ -1,7 +1,9 @@
 package ht.plugin.configration.config;
 
 import ht.plugin.adapter.PropertiesAdapter;
+import ht.plugin.configration.Configration;
 import ht.plugin.properties.JDBCType;
+import ht.plugin.util.HtClassLoader;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -14,6 +16,7 @@ public class JDBCConfig extends PropertiesAdapter{
 	private String userId;
 	private String password;
 	private JDBCType dbType;
+	private Driver driver;
 	
 	public JDBCConfig(String url,String driverClass,String userId,String password){
 		this.url=url;
@@ -22,7 +25,9 @@ public class JDBCConfig extends PropertiesAdapter{
 		this.password=password;
 	}
 	
-	public Connection getConn(Driver driver) throws SQLException{
+	public Connection getConn(Configration config) throws SQLException, InstantiationException, IllegalAccessException{
+		if(this.driver==null)
+			driver=(Driver)HtClassLoader.loadClass(config).newInstance();
 		Properties info=new Properties();
 		info.setProperty("user", userId);
 		info.setProperty("password", password);

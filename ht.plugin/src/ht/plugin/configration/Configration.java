@@ -35,6 +35,21 @@ public class Configration {
 			layout=new ArrayList<>();
 		this.context=context;	
 	}
+	public void destory(){
+		config.clear();
+		config=null;
+		classEntry.clear();
+		classEntry=null;
+		layout.clear();
+		layout=null;
+		dbConfig=null;
+		jsConfig=null;
+		xfconfig=null;
+		tbConfig=null;
+		properties.clear();
+		properties=null;
+		context=null;
+	}
 	
 	public JDBCConfig getDbConfig() {
 		return dbConfig;

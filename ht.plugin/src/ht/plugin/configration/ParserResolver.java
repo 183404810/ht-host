@@ -12,7 +12,7 @@ public class ParserResolver implements EntityResolver{
 	public InputSource resolveEntity(String publicId, String systemId)
 			throws SAXException, IOException {
 		InputStream is = getClass().getClassLoader().getResourceAsStream(
-				"ht/plugin/properties/mybatis-generator-config_1_0.dtd");
+				"ht/plugin/properties/mybatis-generator-config_1_1.dtd");
 		InputSource ins = new InputSource(is);
 		return ins;
 	}

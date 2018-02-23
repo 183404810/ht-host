@@ -18,12 +18,12 @@ public class GeneratorJavaFile extends GeneratedFile{
 	}
 	
 	public GeneratorJavaFile(List<IField> fields,String targetProject,String targetPakage,
-			String fileName,String modifer,String annotaion,LayoutEnum layout){
+			String fileName,String modifer1,String annotaion1,LayoutEnum layout){
 		super(targetProject,targetPakage,layout);
 		this.fields=fields;
 		this.fileName=fileName;
-		this.modifier=modifier;
-		this.annotation=annotation;
+		this.modifier=modifer1;
+		this.annotation=annotaion1;
 		generateGetSetMethod();
 	}
 	

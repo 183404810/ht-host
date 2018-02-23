@@ -1,30 +1,25 @@
 package ht.plugin.context;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-
 import ht.plugin.adapter.PropertiesAdapter;
 import ht.plugin.configration.Configration;
 import ht.plugin.configration.ConfigrationParser;
-import ht.plugin.exception.PluginException;
 import ht.plugin.generate.GeneratedFile;
 import ht.plugin.introspect.ITable;
 import ht.plugin.properties.LayoutEnum;
 import ht.plugin.util.HtClassLoader;
 import ht.plugin.util.StringUtils;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class PluginContext extends PropertiesAdapter{
 	/**
@@ -37,6 +32,7 @@ public class PluginContext extends PropertiesAdapter{
 	private ClassLoader loader;
 	private Generator generator;
 	private List<GeneratedFile> generatedFiles;
+	private FilePathGenerator filePathGenerator;
 
 	public PluginContext(){
 		if(config==null)
@@ -49,14 +45,10 @@ public class PluginContext extends PropertiesAdapter{
 			generator=new MybatisGenerator(this);
 		if(tables==null)
 			tables=new ArrayList<>();
+		if(filePathGenerator==null)
+			filePathGenerator=new FilePathGenerator(this);
 	}
-	
-	public Connection getConn() throws InstantiationException, IllegalAccessException, SQLException{
-		Driver driver=(Driver)HtClassLoader.loadClass(config).newInstance();
-		Connection conn=config.getDbConfig().getConn(driver);
-		return  conn;
-	}
-	
+
 	public void generat(List<String> tableList,Map<LayoutEnum, Boolean> codeLayout) throws Exception{
 		if(generatedFiles==null) generatedFiles=new ArrayList<>();
 		this.generator.generate(generatedFiles,tableList);
@@ -66,16 +58,17 @@ public class PluginContext extends PropertiesAdapter{
 		for(GeneratedFile files:this.generatedFiles){
 			if(!codeLayout.get(files.getLayout()))continue;
 			
-			targetFile=new File(getDirected(files.getTargetProject(),files.getTargetPackage()),files.getFileName());
+			targetFile=new File(filePathGenerator.getDirector(files.getTargetProject(),files.getTargetPackage()),files.getFileName());
 			if(targetFile.exists()){
 				boolean flag = MessageDialog.openConfirm(shell, "确认", "是否覆盖" + targetFile.getName() + "文件");
 				if(!flag) continue;
-				source=files.generator();	
 			}
+			source=files.generator();	
 			if(StringUtils.isEmpty(source));
 				writeFile(targetFile, source, "UTF-8");
 		}
 	}
+	
 	private void writeFile(File file,String context,String encoding) throws Exception{
 		FileOutputStream fos=new FileOutputStream(file,false);
 		OutputStreamWriter osw;
@@ -87,26 +80,19 @@ public class PluginContext extends PropertiesAdapter{
 		BufferedWriter bw=new BufferedWriter(osw);
 		bw.write(context);
 		bw.close();
-		
 	}
 	
-	private File getDirected(String targetProject,String targetPackage) throws PluginException{
-		File f=new File(targetProject);
-		if(!f.isDirectory()){
-			throw new PluginException("项目["+targetProject+"]不存在");
-		}
-		StringBuilder sb=new StringBuilder();
-		StringTokenizer st=new StringTokenizer(targetPackage,".");
-		while(st.hasMoreTokens()){
-			sb.append(st.nextToken());
-			sb.append(File.separator);
-		}
-		File direct=new File(targetProject,sb.toString());
-		if(!direct.isDirectory()){
-			if(!direct.mkdirs())
-				throw new PluginException("创建路径["+sb.toString()+"]错误");
-		}
-		return direct;
+	public void destory(){
+		this.clear();
+		tables.clear();
+		config.destory();
+		config=null;
+		parser=null;
+		loader=null;
+		generator=null;
+		generatedFiles.clear();
+		generatedFiles=null;
+		filePathGenerator=null;
 	}
 	
 	public List<ITable> getTables() {

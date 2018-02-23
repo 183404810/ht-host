@@ -87,7 +87,7 @@ public class WizardWindow extends Wizard{
 	private boolean loadConn(PluginContext context) {
 		Connection conn=null;
 		try {
-			conn=context.getConn();
+			conn=context.getConfig().getDbConfig().getConn(context.getConfig());
 			DatabaseMetaData meta=conn.getMetaData();
 			ResultSet rs=meta.getTables(null, null, null, new String[]{"TABLE"});
 			tableMap=new HashMap<>();

@@ -66,7 +66,8 @@ public class MybatisGenerator implements Generator{
 		for(String s:t){
 			if(sb.length()<=0)
 				sb.append(s);
-			sb.append(s.substring(0, 1).toUpperCase()+s.substring(1));
+			else
+				sb.append(s.substring(0, 1).toUpperCase()+s.substring(1));
 		}
 		return sb.toString();
 	}

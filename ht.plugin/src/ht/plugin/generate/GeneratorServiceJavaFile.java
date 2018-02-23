@@ -38,9 +38,10 @@ public class GeneratorServiceJavaFile extends GeneratedFile{
 			isDao=true;
 		if("javaControllerGenerator".equals(key))
 			isController=true;
-		else 
+		 
 		this.entrityName=entrityName;
 		this.config=config;
+		this.javaFileConfig=config.getConfig().get(key);
 	}
 
 	@Override
@@ -65,13 +66,13 @@ public class GeneratorServiceJavaFile extends GeneratedFile{
 		}
 		sb.append(getMethod().getMethodContext());
 		sb.append(" } ");
-		return null;
+		return sb.toString();
 	}
 	
 	private IMethod getMethod(){
 		IMethod m=null;
 		List<IJavaType> params=new ArrayList<>();
-		if(!isDao){
+		if(isDao){
 			String mapstr=config.getXfconfig().getProperty("interfaceExtendSupInterface");
 			IJavaType type=new IJavaType(mapstr.substring(0, mapstr.lastIndexOf(".")),mapstr.substring(mapstr.lastIndexOf(".")));
 			m=new IMethod(" ","init",type,"public","Mapper",params);

@@ -12,9 +12,9 @@ public abstract class GeneratedFile {
     protected String FilePostfix="java";
     protected LayoutEnum layout;
 	
-	public GeneratedFile(String targetProject,String targetPakage,LayoutEnum layout){
+	public GeneratedFile(String targetProject,String targetPakage1,LayoutEnum layout){
 		this.targetProject=targetProject;
-		this.targetPackage=targetPackage;
+		this.targetPackage=targetPakage1;
 		this.layout=layout;
 	}
 	
@@ -38,6 +38,6 @@ public abstract class GeneratedFile {
 		return targetPackage;
 	}
 	public String getFileName(){
-		return fileName;
+		return fileName+"."+FilePostfix;
 	}
 }
