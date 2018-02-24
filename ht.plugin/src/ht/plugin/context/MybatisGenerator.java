@@ -14,6 +14,7 @@ import ht.plugin.introspect.IField;
 import ht.plugin.introspect.IJavaType;
 import ht.plugin.introspect.ITable;
 import ht.plugin.properties.LayoutEnum;
+import ht.plugin.util.StringUtils;
 
 public class MybatisGenerator implements Generator{
 	private PluginContext context;
@@ -29,10 +30,11 @@ public class MybatisGenerator implements Generator{
 		DBIntrospect introspect=new DBIntrospect(context);
 		introspect.introspect(tableList);
 		for(ITable table:context.getTables()){
-			String tableName=getTableEntriyName(table.getTableName());
+			String tableName=StringUtils.tfNameTransfer(table.getTableName(),true);
+			List<IField> fields=getIField(table.getColumns());
+			generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Mapper",tableName,config.getXfconfig().getProperty("targetProject"),config.getXfconfig().getProperty("targetPackage"),LayoutEnum.DAO_LAYOUT,table.getTableName(),config));
 			for(String key:config.getConfig().keySet()){
 				JavaFileConfig cfg=config.getConfig().get(key);
-				List<IField> fields=getIField(table.getColumns());
 				String targetProject=cfg.getTargetProject();
 				String targetPakage=cfg.getTargetPackage();
 				switch(key){
@@ -41,37 +43,21 @@ public class MybatisGenerator implements Generator{
 						break;
 					case "javaServiceGenerator":
 						if(cfg.isEnableInterfaceSupInterfaceGenericity())
-							generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Service",tableName,config,key,LayoutEnum.SERVICE_LAYOUT));
-						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"ServiceImpl",tableName,config,key,LayoutEnum.SERVICE_LAYOUT));
+							generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Service",tableName,config,key,LayoutEnum.SERVICE_LAYOUT,table.getTableName()));
+						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"ServiceImpl",tableName,config,key,LayoutEnum.SERVICE_LAYOUT,table.getTableName()));
 						break;
-					case "sqlMapGenerator":
-						
-						
 					case "javaDaoGenerator":
 						if(cfg.isEnableInterfaceSupInterfaceGenericity())
-							generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Dao",tableName,config,key,LayoutEnum.DAO_LAYOUT));
-						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"DaoImpl",tableName,config,key,LayoutEnum.DAO_LAYOUT));
+							generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Dao",tableName,config,key,LayoutEnum.DAO_LAYOUT,table.getTableName()));
+						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"DaoImpl",tableName,config,key,LayoutEnum.DAO_LAYOUT,table.getTableName()));
 						break;
 					case "javaControllerGenerator":
-						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Controller",tableName,config,key,LayoutEnum.CONTROLLER_LAYOUT));
+						generatedFiles.add(new GeneratorServiceJavaFile(tableName+"Controller",tableName,config,key,LayoutEnum.CONTROLLER_LAYOUT,table.getTableName()));
 						break;
 				}
 			}
 		}
 	}
-	
-	private String getTableEntriyName(String tableName){
-		String[] t=tableName.split("_");
-		StringBuilder sb=new StringBuilder();
-		for(String s:t){
-			if(sb.length()<=0)
-				sb.append(s);
-			else
-				sb.append(s.substring(0, 1).toUpperCase()+s.substring(1));
-		}
-		return sb.toString();
-	}
-	
 	
 	private List<IField> getIField(List<IColumn> columns){
 		List<IField> fields=new ArrayList<>();
@@ -89,7 +75,7 @@ public class MybatisGenerator implements Generator{
 	 * 
 	 * */
 	private IJavaType convert(String String){
-		switch(String){
+		switch(String.toLowerCase()){
 			case "char":
 			case "varchar":
 			case "text":
@@ -111,6 +97,8 @@ public class MybatisGenerator implements Generator{
 			case "numeric":	
 			case "float":	
 				return IJavaType.getBigDecimalInstance();
+			case "bigint":
+				return IJavaType.getLongInstance();
 		}
 		return null;
 	}

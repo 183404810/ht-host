@@ -14,22 +14,21 @@ public class IMethod extends IElement{
 	
 	public String getMethodContext(){
 		StringBuilder sb=getMethodHeader();
-		sb.append(tabContext).append(modifier).append(splitStr);
+		sb.append(endEnter).append(tabContext).append(modifier).append(splitStr);
 		if(isStatic)
 			sb.append("static").append(splitStr);
 		if(isFinal)
 			sb.append("final").append(splitStr);
-		sb.append(name).append("(");
+		sb.append(type.getTypeName()).append(splitStr).append(name).append("(");
 		int i=0;
 		for(IJavaType type:params){
-			String name=type.getTypeName().substring(0,1).toLowerCase()+type.getTypeName().substring(1);
 			if(i>0)
 				sb.append(",");
-			sb.append(type.getTypeName()).append(splitStr).append(name);
+			sb.append(type.getTypeName()).append(splitStr).append(type.getParamName());
 			i++;
 		}
-		sb.append(")").append(startM).append(endEnter).append(methodContext).append(endEnter).append(endM);
-		return sb.toString();
+		sb.append(")").append(splitStr).append(startM).append(endEnter).append(tabContext).append(methodContext).append(endEnter).append(tabContext).append(endM);
+		return sb.append(endEnter).toString();
 	}
 	
 	public String getImport(){

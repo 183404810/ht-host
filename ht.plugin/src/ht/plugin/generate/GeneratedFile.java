@@ -10,6 +10,8 @@ public abstract class GeneratedFile {
 	protected String modifier;
 	protected String newLine="\r\n";
     protected String FilePostfix="java";
+    protected String fileLocal="src/main/java";
+    
     protected LayoutEnum layout;
 	
 	public GeneratedFile(String targetProject,String targetPakage1,LayoutEnum layout){
@@ -22,6 +24,13 @@ public abstract class GeneratedFile {
 	public abstract StringBuilder getFileHeader();
 	public void setLayout(LayoutEnum layout){
 		this.layout=layout;
+	}
+	
+	public String getFileLocal(){
+		return this.fileLocal;
+	}
+	public void setFileLocal(String fileLocal){
+		this.fileLocal=fileLocal;
 	}
 	
 	public LayoutEnum getLayout(){

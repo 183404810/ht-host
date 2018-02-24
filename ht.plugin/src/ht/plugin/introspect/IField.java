@@ -1,6 +1,7 @@
 package ht.plugin.introspect;
 
 import ht.plugin.properties.JSTemplate;
+import ht.plugin.util.StringUtils;
 
 public class IField extends IElement{
 	private String proertySplit=",";
@@ -11,9 +12,8 @@ public class IField extends IElement{
 	}
 	public String getJavaFieldContext(){
 		StringBuilder sb=getMethodHeader();
-		sb=newLine(sb.append(tabContext).append(remarkStart));
-		sb.append(remarkTag).append(splitStr).append(annotation).append(endEnter).append(remarkEnd).append(endEnter);
-		sb.append(tabContext).append(modifier).append(splitStr).append(pressRemarks);
+		sb=newLine(sb);
+		sb.append(tabContext).append(modifier).append(splitStr).append(type.getTypeName()).append(splitStr).append(StringUtils.tfNameTransfer(name,false)).append(pressRemarks);
 		sb.append(endEnter);
 		return sb.toString();
 	}

@@ -127,6 +127,7 @@ public class FilePathGenerator {
 		IPackageFragmentRoot srcFolder = null;
 		for (int i = 0; i < roots.length; i++) {
 			if ((!roots[i].isArchive()) && (!roots[i].isReadOnly()) && (!roots[i].isExternal())){
+				if()
 				srcFolder = roots[i];
 				break;
 			}

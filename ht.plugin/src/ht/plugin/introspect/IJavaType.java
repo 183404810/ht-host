@@ -3,6 +3,7 @@ package ht.plugin.introspect;
 public class IJavaType {
 	private String packageTarget;
 	private String typeName;
+	private String paramName;
 	
 	private static IJavaType ByteInstance;
 	private static IJavaType ShortInstance;
@@ -20,7 +21,7 @@ public class IJavaType {
 	private static IJavaType DateInstance;
 	private static IJavaType voidType;
 	
-	public IJavaType(String packageTarget,String typeName){
+	public IJavaType(String typeName,String packageTarget){
 		this.packageTarget=packageTarget;
 		this.typeName=typeName;
 	}
@@ -32,6 +33,14 @@ public class IJavaType {
 	public String getTypeName() {
 		return typeName;
 	}	
+	
+	public String getParamName(){
+		return this.paramName;
+	}
+	
+	public void setParamName(String paramName){
+		this.paramName=paramName;
+	}
 	
 	public static IJavaType getByteInstance(){
 		if(ByteInstance==null)
@@ -114,6 +123,6 @@ public class IJavaType {
 	public static IJavaType getVoidType() {
 		if(voidType==null)
 			voidType=new IJavaType("void",null);
-		return DateInstance;
+		return voidType;
 	}
 }

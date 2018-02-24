@@ -34,7 +34,7 @@ public abstract class IElement {
 	
 	protected StringBuilder getMethodHeader(){
 		StringBuilder sb=new StringBuilder();
-		sb.append(tabContext).append(remarkStart).append(endEnter).append(tabContext).append(remarkTag);
+		sb.append(endEnter).append(tabContext).append(remarkStart).append(endEnter).append(tabContext).append(remarkTag);
 		sb.append(annotation).append(endEnter).append(tabContext).append(remarkEnd);
 		return sb;
 	}
