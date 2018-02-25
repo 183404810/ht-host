@@ -29,17 +29,17 @@ public class FilePathGenerator {
 		this.projects=new HashMap<>();
 	}
 	
-	public File getDirector(String targetProject, String targetPackage) throws PluginException{
-		 IFolder folder = getFolder(targetProject, targetPackage);
+	public File getDirector(String targetProject, String targetPackage,String fileLocal) throws PluginException{
+		 IFolder folder = getFolder(targetProject, targetPackage, fileLocal);
 		 return folder.getRawLocation().toFile();
 	}
 	
-	private IFolder getFolder(String targetProject,String targetPackage) throws PluginException{
+	private IFolder getFolder(String targetProject,String targetPackage,String fileLocal) throws PluginException{
 		String key=targetProject+targetPackage;
 		if(this.folders.containsKey(key)) 
 			return this.folders.get(key);
 		IFolder folder;
-		IPackageFragmentRoot root = getSourceFolder(targetProject);
+		IPackageFragmentRoot root = getSourceFolder(targetProject,fileLocal);
 		IPackageFragment packageFragment = getPackage(root, targetPackage);
 		try{
 			folder = (IFolder)packageFragment.getCorrespondingResource();
@@ -50,7 +50,7 @@ public class FilePathGenerator {
 		return folder;
 	}
 	
-	private IPackageFragmentRoot getSourceFolder(String targetProject) throws PluginException{
+	private IPackageFragmentRoot getSourceFolder(String targetProject,String fileLocal) throws PluginException{
 	    if(sourceFolders.containsKey(targetProject)) 
 	    	return sourceFolders.get(targetProject);
 	    
@@ -62,7 +62,7 @@ public class FilePathGenerator {
 
 	    if (index == -1){
 	        IJavaProject javaProject = getJavaProject(targetProject);
-	        answer = getFirstSourceFolder(javaProject);
+	        answer = getFirstSourceFolder(javaProject,fileLocal);
 	    } else {
 	    	IJavaProject javaProject = getJavaProject(targetProject.substring(0, index));
 	        answer = getSpecificSourceFolder(javaProject, targetProject);
@@ -117,7 +117,7 @@ public class FilePathGenerator {
 		return javaProject;
 	}
 	
-	private IPackageFragmentRoot getFirstSourceFolder(IJavaProject javaProject) throws PluginException{
+	private IPackageFragmentRoot getFirstSourceFolder(IJavaProject javaProject,String fileLocal) throws PluginException{
 		IPackageFragmentRoot[] roots;
 		try{
 			roots = javaProject.getPackageFragmentRoots();
@@ -127,9 +127,10 @@ public class FilePathGenerator {
 		IPackageFragmentRoot srcFolder = null;
 		for (int i = 0; i < roots.length; i++) {
 			if ((!roots[i].isArchive()) && (!roots[i].isReadOnly()) && (!roots[i].isExternal())){
-				if()
-				srcFolder = roots[i];
-				break;
+				if(roots[i].getPath().toFile().getAbsolutePath().endsWith(fileLocal)){
+					srcFolder = roots[i];
+					break;
+				}
 			}
 		}
 		if (srcFolder == null) {

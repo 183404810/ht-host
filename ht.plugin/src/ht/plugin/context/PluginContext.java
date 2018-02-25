@@ -58,7 +58,7 @@ public class PluginContext extends PropertiesAdapter{
 		for(GeneratedFile files:this.generatedFiles){
 			if(!codeLayout.get(files.getLayout()))continue;
 			
-			targetFile=new File(filePathGenerator.getDirector(files.getTargetProject(),files.getTargetPackage()),files.getFileName());
+			targetFile=new File(filePathGenerator.getDirector(files.getTargetProject(),files.getTargetPackage(),files.getFileLocal()),files.getFileName());
 			if(targetFile.exists()){
 				boolean flag = MessageDialog.openConfirm(shell, "确认", "是否覆盖" + targetFile.getName() + "文件");
 				if(!flag) continue;

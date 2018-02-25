@@ -5,12 +5,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import msc.entiry.SCOperation;
-import msc.entiry.SCResource;
-import msc.entiry.SCRole;
-import msc.entiry.SCRoleRight;
-import msc.entiry.SCUser;
-import msc.entiry.SCUserRole;
+import msc.entity.SCOperation;
+import msc.entity.SCResource;
+import msc.entity.SCRole;
+import msc.entity.SCRoleRight;
+import msc.entity.SCUser;
+import msc.entity.SCUserRole;
 import msc.mapper.LoginRightMapper;
 
 import org.springframework.stereotype.Repository;

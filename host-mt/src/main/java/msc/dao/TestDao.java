@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Repository;
 
-import msc.entiry.Test;
+import msc.entity.Test;
 import msc.mapper.TestMapper;
 
 @Repository("testDao") 

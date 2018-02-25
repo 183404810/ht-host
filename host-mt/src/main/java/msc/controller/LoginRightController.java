@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import msc.entiry.TreeModel;
+import msc.entity.TreeModel;
 import msc.model.ModelJson;
 import msc.service.LoginRightService;
 

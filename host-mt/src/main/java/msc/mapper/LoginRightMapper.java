@@ -3,14 +3,14 @@ package msc.mapper;
 import java.util.List;
 import java.util.Map;
 
-import msc.entiry.SCOperation;
-import msc.entiry.SCResource;
-import msc.entiry.SCRole;
-import msc.entiry.SCRoleRight;
-import msc.entiry.SCUser;
-import msc.entiry.SCUserRole;
-
 import org.apache.ibatis.annotations.Param;
+
+import msc.entity.SCOperation;
+import msc.entity.SCResource;
+import msc.entity.SCRole;
+import msc.entity.SCRoleRight;
+import msc.entity.SCUser;
+import msc.entity.SCUserRole;
 
 public interface LoginRightMapper {
 

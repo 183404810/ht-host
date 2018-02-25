@@ -5,7 +5,7 @@ import ht.msc.base.BaseService;
 
 import javax.annotation.Resource;
 
-import msc.entiry.SCUser;
+import msc.entity.SCUser;
 import msc.service.UserService;
 
 import org.springframework.stereotype.Controller;

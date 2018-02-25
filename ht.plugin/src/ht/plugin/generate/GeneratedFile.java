@@ -1,5 +1,7 @@
 package ht.plugin.generate;
 
+import java.io.File;
+
 import ht.plugin.properties.LayoutEnum;
 
 public abstract class GeneratedFile {
@@ -10,7 +12,7 @@ public abstract class GeneratedFile {
 	protected String modifier;
 	protected String newLine="\r\n";
     protected String FilePostfix="java";
-    protected String fileLocal="src/main/java";
+    protected String fileLocal="src"+File.separator+"main"+File.separator+"java";
     
     protected LayoutEnum layout;
 	

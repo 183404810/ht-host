@@ -1,4 +1,4 @@
-package msc.entiry;
+package msc.entity;
 
 import java.io.Serializable;
 
