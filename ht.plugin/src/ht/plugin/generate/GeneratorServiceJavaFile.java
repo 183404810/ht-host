@@ -128,11 +128,11 @@ public class GeneratorServiceJavaFile extends GeneratedFile{
 		sb.append("package ").append(targetPackage).append(newLine);
 	
 		if(javaFileConfig!=null && javaFileConfig.isEnableInterfaceSupInterfaceGenericity())
-			sb.append("import ").append(javaFileConfig.getInterfaceExtendSupInterface()).append(newLine);
+			sb.append("import ").append(javaFileConfig.getInterfaceExtendSupInterface()).append(";").append(newLine);
 		if(javaFileConfig!=null && javaFileConfig.isEnableSupClassGenericity())
-			sb.append("import ").append(javaFileConfig.getExtendSupClass()).append(newLine);
+			sb.append("import ").append(javaFileConfig.getExtendSupClass()).append(";").append(newLine);
 		if(isMapper)
-			sb.append("import ").append(config.getXfconfig().getProperty("interfaceExtendSupInterface")).append(newLine);
+			sb.append("import ").append(config.getXfconfig().getProperty("interfaceExtendSupInterface")).append(";").append(newLine);
 		sb.append(newLine);
 		
 		if(!StringUtils.isEmpty(annotation))
